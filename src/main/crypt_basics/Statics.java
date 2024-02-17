@@ -2,7 +2,7 @@ package crypt_basics;
 
 public class Statics {
 	enum CLIMode {
-		Encrypt, Decrypt
+		ENCYRPT, DECRYPT
 	}
 
 	enum Algorithm {
