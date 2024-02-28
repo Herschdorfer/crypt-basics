@@ -30,7 +30,7 @@ class KeygenTest {
 		}
 
 		for (int i = 0; i < chars.length; i++) {
-			assert (chars[i] == (char)decrypted[i].intValue());
+			assert (chars[i] == (char) decrypted[i].intValue());
 		}
 	}
 

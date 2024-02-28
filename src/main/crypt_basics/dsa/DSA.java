@@ -5,9 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import crypt_basics.SignatureAlgorithm;
-
-public class DSA implements SignatureAlgorithm {
+public class DSA {
 
 	// prvate key
 	private BigInteger x;
@@ -109,7 +107,6 @@ public class DSA implements SignatureAlgorithm {
 		}
 	}
 
-	@Override
 	public BigInteger[] sign(char[] m) {
 
 		BigInteger k;
@@ -131,7 +128,6 @@ public class DSA implements SignatureAlgorithm {
 		return new BigInteger[] { r, s };
 	}
 
-	@Override
 	public boolean verify(BigInteger[] signature, char[] message) {
 		if (signature.length != 2) {
 			throw new IllegalArgumentException("Invalid signature");

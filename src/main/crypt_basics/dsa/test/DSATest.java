@@ -11,8 +11,8 @@ class DSATest {
 
 	void generalTest(DSA sut) {
 		BigInteger[] signature = sut.sign("hello".toCharArray());
-		
-		assert(sut.verify(signature, "hello".toCharArray()));
+
+		assert (sut.verify(signature, "hello".toCharArray()));
 	}
 
 	@Test

@@ -2,9 +2,7 @@ package crypt_basics.rsa;
 
 import java.math.BigInteger;
 
-import crypt_basics.Algorithm;
-
-public class RSA implements Algorithm {
+public class RSA {
 	private RSAKeygen keygen;
 
 	public RSA(BigInteger p, BigInteger q, BigInteger e) {
@@ -24,7 +22,6 @@ public class RSA implements Algorithm {
 		this.keygen.generatePrivateKey();
 	}
 
-	@Override
 	public BigInteger[] encrypt(char[] m) {
 		BigInteger[] result = new BigInteger[m.length];
 		for (int i = 0; i < m.length; i++) {
@@ -33,12 +30,11 @@ public class RSA implements Algorithm {
 		return result;
 	}
 
-	@Override
 	public char[] decrypt(BigInteger[] c) {
 		char[] result = new char[c.length];
-        for (int i = 0; i < c.length; i++) {
-            result[i] = (char) (c[i].modPow(keygen.getD(), keygen.getN()).intValue());
-        }
-        return result;		
+		for (int i = 0; i < c.length; i++) {
+			result[i] = (char) (c[i].modPow(keygen.getD(), keygen.getN()).intValue());
+		}
+		return result;
 	}
 }
