@@ -1,5 +1,7 @@
 package crypt_basics;
 
+import java.math.BigInteger;
+
 /**
  * Algorithm
  * 
@@ -13,7 +15,7 @@ public interface Algorithm {
 	 * @param m message
 	 * @return encrypted message
 	 */
-	char[] encrypt(char[] m);
+	BigInteger[] encrypt(char[] m);
 
 	/**
      * Decrypts a message
@@ -21,6 +23,6 @@ public interface Algorithm {
      * @param c encrypted message
      * @return decrypted message
      */
-	char[] decrypt(char[] c);
+	char[] decrypt(BigInteger[] c);
 
 }

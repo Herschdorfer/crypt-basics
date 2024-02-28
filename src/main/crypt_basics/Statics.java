@@ -2,10 +2,10 @@ package crypt_basics;
 
 public class Statics {
 	enum CLIMode {
-		ENCYRPT, DECRYPT
+		NONE, CRYPT, SIGN
 	}
 
 	enum Algorithm {
-		RSA
+		RSA, DSA
 	}
 }

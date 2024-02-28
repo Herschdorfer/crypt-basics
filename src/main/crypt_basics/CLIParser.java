@@ -6,13 +6,15 @@ import crypt_basics.Statics.Algorithm;
 import crypt_basics.Statics.CLIMode;
 
 public class CLIParser {
-	private CLIMode mode;
+	private CLIMode mode = CLIMode.NONE;
 	private Algorithm algorithm;
-	private String input;
+	private char[] input;
 	private String output;
 	private String key;
-	private int bits;
+	private Integer bits;
 	private String[] args;
+	private Integer lBits;
+	private Integer nBits;
 
 	public CLIParser(String[] args) {
 		this.args = args;
@@ -23,13 +25,32 @@ public class CLIParser {
 	private void handleArgs() {
 		while (args.length > 0) {
 			switch (args[0]) {
+			case "-e":
+				this.mode = CLIMode.CRYPT;
+				if (mode != CLIMode.NONE) {
+					System.out.println("Mode already set");
+					System.exit(1);
+				}
+				break;
+			case "-s":
+				this.mode = CLIMode.SIGN;
+				if (mode != CLIMode.NONE) {
+					System.out.println("Mode already set");
+					System.exit(1);
+				}
+				break;
 			case "-A":
 				handleAlgorithm();
 				break;
 			case "-b":
-				handleBits();
+				this.bits = handleBits();
 				break;
-			
+			case "-L":
+				this.lBits = handleBits();
+				break;
+			case "-N":
+				this.nBits = handleBits();
+				break;
 
 			default:
 				// normal input
@@ -45,7 +66,7 @@ public class CLIParser {
 	}
 
 	private void handleInput() {
-		this.input = args[0];
+		this.input = args[0].toCharArray();
 		removeArgs(1);
 	}
 
@@ -63,9 +84,10 @@ public class CLIParser {
 		removeArgs(2);
 	}
 
-	private void handleBits() {
-		this.bits = Integer.parseInt(args[1]);
+	private Integer handleBits() {
+		Integer locBits = Integer.parseInt(args[1]);
 		removeArgs(2);
+		return locBits;
 	}
 
 	private void removeArgs(int i) {
@@ -80,7 +102,7 @@ public class CLIParser {
 		return algorithm;
 	}
 
-	public String getInput() {
+	public char[] getInput() {
 		return input;
 	}
 
@@ -93,7 +115,26 @@ public class CLIParser {
 	}
 
 	public int getBits() {
+		if (bits == null) {
+			System.out.println("No bits specified, defaulting to 2048");
+			return 2048;
+		}
 		return bits;
 	}
 
+	public int getLBits() {
+		if (lBits == null) {
+			System.out.println("No L bits specified, defaulting to 2048");
+			return 2048;
+		}
+		return lBits;
+	}
+
+	public int getNBits() {
+		if (nBits == null) {
+			System.out.println("No N bits specified, defaulting to 224");
+			return 224;
+		}
+		return nBits;
+	}
 }

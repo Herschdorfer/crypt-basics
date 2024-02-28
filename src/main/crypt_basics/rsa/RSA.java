@@ -25,18 +25,20 @@ public class RSA implements Algorithm {
 	}
 
 	@Override
-	public char[] encrypt(char[] m) {
+	public BigInteger[] encrypt(char[] m) {
+		BigInteger[] result = new BigInteger[m.length];
 		for (int i = 0; i < m.length; i++) {
-			m[i] = (char) (BigInteger.valueOf(m[i]).modPow(keygen.getE(), keygen.getN()).intValue());
+			result[i] = BigInteger.valueOf(m[i]).modPow(keygen.getE(), keygen.getN());
 		}
-		return m;
+		return result;
 	}
 
 	@Override
-	public char[] decrypt(char[] c) {
+	public char[] decrypt(BigInteger[] c) {
+		char[] result = new char[c.length];
         for (int i = 0; i < c.length; i++) {
-            c[i] = (char) (BigInteger.valueOf(c[i]).modPow(keygen.getD(), keygen.getN()).intValue());
+            result[i] = (char) (c[i].modPow(keygen.getD(), keygen.getN()).intValue());
         }
-        return c;		
+        return result;		
 	}
 }
