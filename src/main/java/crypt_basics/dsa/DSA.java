@@ -46,10 +46,6 @@ public class DSA {
 	 */
 	private MessageDigest getHash(int nBits) throws NoSuchAlgorithmException {
 		switch (nBits) {
-		case 160:
-			return MessageDigest.getInstance("SHA-1");
-		case 224:
-			return MessageDigest.getInstance("SHA-224");
 		case 256:
 			return MessageDigest.getInstance("SHA-256");
 		case 384:
