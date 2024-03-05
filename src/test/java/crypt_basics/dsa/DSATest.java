@@ -15,7 +15,7 @@ class DSATest {
 
 	@Test
 	void generationTest() throws NoSuchAlgorithmException {
-		DSA sut = new DSA(1024, 160);
+		DSA sut = new DSA(2048, 256);
 		generalTest(sut);
 	}
 

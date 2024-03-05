@@ -36,7 +36,7 @@ class TestSymCrypt {
 		assertDoesNotThrow(() -> {
 			SymCrypt sut = new SymCrypt("password", "AES/CBC/PKCS5Padding");
 
-			String shortText = "12345678901234566";
+			String shortText = "123456789012345";
 			
 			IvParameterSpec iv = createIv();
 			byte[] temp = sut.encrypt(shortText, iv);
