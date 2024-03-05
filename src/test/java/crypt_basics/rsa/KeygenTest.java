@@ -1,7 +1,7 @@
 /**
  * 
  */
-package crypt_basics.rsa.test;
+package crypt_basics.rsa;
 
 import java.math.BigInteger;
 import java.util.Random;

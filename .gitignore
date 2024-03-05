@@ -1,1 +1,7 @@
 /bin/
+/target/
+
+# eclipse
+.settings
+.classpath
+.project

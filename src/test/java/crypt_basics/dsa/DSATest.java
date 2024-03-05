@@ -1,4 +1,4 @@
-package crypt_basics.dsa.test;
+package crypt_basics.dsa;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;

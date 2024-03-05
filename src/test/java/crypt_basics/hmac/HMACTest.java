@@ -1,4 +1,4 @@
-package crypt_basics.hmac.test;
+package crypt_basics.hmac;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 

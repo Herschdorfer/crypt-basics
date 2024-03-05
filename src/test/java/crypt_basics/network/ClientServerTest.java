@@ -1,4 +1,4 @@
-package crypt_basics.network.test;
+package crypt_basics.network;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,4 +1,4 @@
-package crypt_basics.rsa.test;
+package crypt_basics.rsa;
 
 import java.math.BigInteger;
 import java.util.Random;
@@ -13,10 +13,7 @@ class RSATest {
 		char[] m = "Hello World".toCharArray();
 
 		BigInteger[] c = sut.encrypt(m);
-		System.out.println(c);
 		m = sut.decrypt(c);
-		System.out.println(m);
-
 		assert (new String(m).equals("Hello World"));
 	}
 
