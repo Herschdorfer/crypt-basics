@@ -5,8 +5,6 @@ import java.security.NoSuchAlgorithmException;
 
 import org.junit.jupiter.api.Test;
 
-import crypt_basics.dsa.DSA;
-
 class DSATest {
 
 	void generalTest(DSA sut) {

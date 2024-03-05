@@ -5,9 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import crypt_basics.network.Client;
-import crypt_basics.network.Server;
-
 /**
  * Test the client server communication
  */

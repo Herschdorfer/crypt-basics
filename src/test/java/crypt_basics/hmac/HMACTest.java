@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 
-import crypt_basics.hmac.HMAC;
-
 class HMACTest {
 
 	@Test

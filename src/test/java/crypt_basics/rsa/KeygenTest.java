@@ -3,12 +3,12 @@
  */
 package crypt_basics.rsa;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.math.BigInteger;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
-
-import crypt_basics.rsa.RSAKeygen;
 
 /**
  * 
@@ -30,7 +30,7 @@ class KeygenTest {
 		}
 
 		for (int i = 0; i < chars.length; i++) {
-			assert (chars[i] == (char) decrypted[i].intValue());
+			assertEquals(chars[i], (char) decrypted[i].intValue());
 		}
 	}
 

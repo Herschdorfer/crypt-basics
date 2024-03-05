@@ -5,8 +5,6 @@ import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
-import crypt_basics.rsa.RSA;
-
 class RSATest {
 
 	void generalTest(RSA sut) {
