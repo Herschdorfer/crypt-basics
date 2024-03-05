@@ -6,9 +6,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.logging.Logger;
 
-
+/**
+ * This class represents the Digital Signature Algorithm (DSA). It provides
+ * methods for generating keys, signing messages, and verifying signatures.
+ */
 public class DSA {
-	
+
 	/** The Logger */
 	Logger logger = Logger.getLogger(DSA.class.getName());
 
@@ -108,6 +111,12 @@ public class DSA {
 		}
 	}
 
+	/**
+	 * Sign a message using the private key.
+	 * 
+	 * @param m the message to be signed
+	 * @return an array of two BigIntegers representing the signature
+	 */
 	public BigInteger[] sign(char[] m) {
 
 		BigInteger k;
@@ -129,6 +138,14 @@ public class DSA {
 		return new BigInteger[] { r, s };
 	}
 
+	/**
+	 * Verify the signature of a message using the public key.
+	 * 
+	 * @param signature the signature to be verified
+	 * @param message   the message to be verified
+	 * @return true if the signature is valid, false otherwise
+	 * @throws IllegalArgumentException if the signature is invalid
+	 */
 	public boolean verify(BigInteger[] signature, char[] message) {
 		if (signature.length != 2) {
 			throw new IllegalArgumentException("Invalid signature");

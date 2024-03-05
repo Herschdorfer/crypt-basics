@@ -16,22 +16,29 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * This class provides symmetric encryption and decryption using the AES
+ * algorithm.
+ */
 public class SymCrypt {
 
 	private Cipher cypher;
 	private SecretKey key;
 
 	/**
-	 * AES constructor
+	 * Constructs a SymCrypt object with the specified password and algorithm.
 	 * 
-	 * @throws NoSuchPaddingException
-	 * @throws NoSuchAlgorithmException
-	 * @throws InvalidKeySpecException
+	 * @param password  the password used for encryption and decryption
+	 * @param algorithm the encryption algorithm to be used
+	 * @throws NoSuchAlgorithmException if the specified algorithm is not available
+	 * @throws NoSuchPaddingException   if the specified padding scheme is not
+	 *                                  available
+	 * @throws InvalidKeySpecException  if the provided key specification is invalid
 	 */
 	public SymCrypt(String password, String algorithm)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException {
 		cypher = Cipher.getInstance(algorithm);
-		
+
 		byte[] salt = SecureRandom.getSeed(cypher.getBlockSize());
 
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
@@ -40,9 +47,9 @@ public class SymCrypt {
 	}
 
 	/**
-	 * Creates an IV.
+	 * Creates an initialization vector (IV) for encryption.
 	 * 
-	 * @return Random IV.
+	 * @return a randomly generated IV
 	 */
 	private IvParameterSpec createIv() {
 		SecureRandom random = new SecureRandom();
@@ -52,15 +59,15 @@ public class SymCrypt {
 	}
 
 	/**
-	 * Encrypt message
+	 * Encrypts the given message using the initialized key and IV.
 	 * 
-	 * @param msg
-	 * @return
-	 * 
-	 * @throws InvalidKeyException
-	 * @throws BadPaddingException
-	 * @throws IllegalBlockSizeException
-	 * @throws InvalidAlgorithmParameterException
+	 * @param msg the message to be encrypted
+	 * @return the encrypted message as a byte array
+	 * @throws InvalidKeyException                if the provided key is invalid
+	 * @throws BadPaddingException                if the padding is invalid
+	 * @throws IllegalBlockSizeException          if the block size is invalid
+	 * @throws InvalidAlgorithmParameterException if the provided algorithm
+	 *                                            parameters are invalid
 	 */
 	public byte[] encrypt(String msg) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException,
 			InvalidAlgorithmParameterException {
@@ -79,14 +86,15 @@ public class SymCrypt {
 	}
 
 	/**
-	 * Decrypt message
+	 * Decrypts the given byte array using the initialized key and IV.
 	 * 
-	 * @param stream
-	 * @return
-	 * @throws InvalidKeyException
-	 * @throws BadPaddingException
-	 * @throws IllegalBlockSizeException
-	 * @throws InvalidAlgorithmParameterException
+	 * @param stream the byte array to be decrypted
+	 * @return the decrypted message as a String
+	 * @throws InvalidKeyException                if the provided key is invalid
+	 * @throws BadPaddingException                if the padding is invalid
+	 * @throws IllegalBlockSizeException          if the block size is invalid
+	 * @throws InvalidAlgorithmParameterException if the provided algorithm
+	 *                                            parameters are invalid
 	 */
 	public String decrypt(byte[] stream) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException,
 			InvalidAlgorithmParameterException {

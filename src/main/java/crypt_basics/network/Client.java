@@ -6,11 +6,11 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 /**
- * The Class Client.
+ * The Client class represents a client that can send messages to a server.
  */
 public class Client {
-	
-    /** The logger. */	
+
+	/** The logger. */
 	Logger logger = Logger.getLogger(Client.class.getName());
 
 	/** The host. */
@@ -21,6 +21,9 @@ public class Client {
 
 	/**
 	 * Client constructor
+	 * 
+	 * @param port the port number to connect to
+	 * @param host the host address to connect to
 	 */
 	public Client(int port, String host) {
 		this.port = port;
@@ -28,7 +31,10 @@ public class Client {
 	}
 
 	/**
-	 * Send message.
+	 * Sends a message to the server.
+	 * 
+	 * @param message the message to send
+	 * @throws IOException if an I/O error occurs while sending the message
 	 */
 	public void send(String message) throws IOException {
 		OutputStream out;
