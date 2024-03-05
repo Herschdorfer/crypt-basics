@@ -1,8 +1,8 @@
 package crypt_basics.aes;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
@@ -11,7 +11,9 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class SymCrypt {
 
@@ -31,7 +33,7 @@ public class SymCrypt {
 
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 		PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), "salt".getBytes(), 65536, 256);
-		key = factory.generateSecret(spec);
+		key = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
 	}
 
 	/**
@@ -44,9 +46,10 @@ public class SymCrypt {
 	 * @throws InvalidKeyException
 	 * @throws BadPaddingException
 	 * @throws IllegalBlockSizeException
+	 * @throws InvalidAlgorithmParameterException
 	 */
-	public byte[] encrypt(String msg, SecureRandom iv)
-			throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+	public byte[] encrypt(String msg, IvParameterSpec iv) throws InvalidKeyException, IllegalBlockSizeException,
+			BadPaddingException, InvalidAlgorithmParameterException {
 		cypher.init(Cipher.ENCRYPT_MODE, key, iv);
 		return cypher.doFinal(msg.getBytes());
 	}
@@ -60,10 +63,11 @@ public class SymCrypt {
 	 * @throws InvalidKeyException
 	 * @throws BadPaddingException
 	 * @throws IllegalBlockSizeException
+	 * @throws InvalidAlgorithmParameterException
 	 */
-	public String decrypt(byte[] cypherText, SecureRandom iv)
-			throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+	public String decrypt(byte[] cypherText, IvParameterSpec iv) throws InvalidKeyException, IllegalBlockSizeException,
+			BadPaddingException, InvalidAlgorithmParameterException {
 		cypher.init(Cipher.DECRYPT_MODE, key, iv);
-		return String.valueOf(cypher.doFinal(cypherText));
+		return new String(cypher.doFinal(cypherText));
 	}
 }
