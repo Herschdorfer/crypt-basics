@@ -4,8 +4,13 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.logging.Logger;
+
 
 public class DSA {
+	
+	/** The Logger */
+	Logger logger = Logger.getLogger(DSA.class.getName());
 
 	// prvate key
 	private BigInteger x;
@@ -30,7 +35,7 @@ public class DSA {
 		try {
 			this.hash = getHash(nBits);
 		} catch (NoSuchAlgorithmException e) {
-			System.out.println("Invalid hash function");
+			logger.severe(e.getMessage());
 			System.exit(1);
 		}
 
