@@ -93,7 +93,7 @@ public class DSA {
 	private void calculatePQ(int lBits, int nBits) {
 
 		// generate a random prime number q
-		this.q = BigInteger.probablePrime(nBits, new java.util.Random());
+		this.q = BigInteger.probablePrime(nBits, new SecureRandom());
 
 		// expand p to the desired bit length
 		p = q.shiftLeft(lBits - nBits).add(BigInteger.ONE);
@@ -111,7 +111,7 @@ public class DSA {
 
 		BigInteger k;
 		do {
-			k = new BigInteger(q.bitLength(), new java.util.Random());
+			k = new BigInteger(q.bitLength(), new SecureRandom());
 		} while (k.equals(BigInteger.ZERO));
 
 		BigInteger r;

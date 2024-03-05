@@ -3,11 +3,15 @@ package crypt_basics.network;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 /**
  * The Class Client.
  */
 public class Client {
+	
+    /** The logger. */	
+	Logger logger = Logger.getLogger(Client.class.getName());
 
 	/** The host. */
 	private String host;
@@ -33,7 +37,7 @@ public class Client {
 			out = socket.getOutputStream();
 			out.write(message.getBytes());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.severe(e.getMessage());
 		}
 	}
 }
