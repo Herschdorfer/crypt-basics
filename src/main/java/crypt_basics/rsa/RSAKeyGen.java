@@ -3,9 +3,9 @@ package crypt_basics.rsa;
 import java.math.BigInteger;
 
 /**
- * The RSAKeygen class is responsible for generating RSA key pairs.
+ * The RSAKeyGen class is responsible for generating RSA key pairs.
  */
-public class RSAKeygen {
+public class RSAKeyGen {
 
 	private BigInteger n;
 	private BigInteger phiN;
@@ -13,21 +13,21 @@ public class RSAKeygen {
 	private BigInteger d;
 
 	/**
-	 * Constructs an RSAKeygen object with the given prime numbers p and q, and the
+	 * Constructs an RSAKeyGen object with the given prime numbers p and q, and the
 	 * public exponent e.
 	 *
 	 * @param p the first prime number
 	 * @param q the second prime number
 	 * @param e the public exponent
 	 */
-	public RSAKeygen(BigInteger p, BigInteger q, BigInteger e) {
+	public RSAKeyGen(BigInteger p, BigInteger q, BigInteger e) {
 		n = p.multiply(q);
 		phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 		this.e = e;
 	}
 
 	/**
-	 * Generates the private key using the public exponent and the totient of n.
+	 * Generates the private key using the public exponent and the Phi(n) value.
 	 *
 	 * @return the private key
 	 */

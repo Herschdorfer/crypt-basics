@@ -22,7 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class SymCrypt {
 
-	private Cipher cypher;
+	private Cipher cipher;
 	private SecretKey key;
 
 	/**
@@ -37,12 +37,12 @@ public class SymCrypt {
 	 */
 	public SymCrypt(String password, String algorithm)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException {
-		cypher = Cipher.getInstance(algorithm);
+		cipher = Cipher.getInstance(algorithm);
 
-		byte[] salt = SecureRandom.getSeed(cypher.getBlockSize());
+		byte[] salt = SecureRandom.getSeed(cipher.getBlockSize());
 
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-		PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, cypher.getBlockSize() * 8);
+		PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, cipher.getBlockSize() * 8);
 		key = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
 	}
 
@@ -53,7 +53,7 @@ public class SymCrypt {
 	 */
 	private IvParameterSpec createIv() {
 		SecureRandom random = new SecureRandom();
-		byte[] ivBytes = new byte[cypher.getBlockSize()];
+		byte[] ivBytes = new byte[cipher.getBlockSize()];
 		random.nextBytes(ivBytes);
 		return new IvParameterSpec(ivBytes);
 	}
@@ -73,14 +73,14 @@ public class SymCrypt {
 			InvalidAlgorithmParameterException {
 		IvParameterSpec iv = createIv();
 
-		cypher.init(Cipher.ENCRYPT_MODE, key, iv);
-		byte[] cypherText = cypher.doFinal(msg.getBytes());
+		cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+		byte[] cipherText = cipher.doFinal(msg.getBytes());
 		byte[] ivBytes = iv.getIV();
 
-		byte[] concat = new byte[ivBytes.length + cypherText.length];
+		byte[] concat = new byte[ivBytes.length + cipherText.length];
 
 		System.arraycopy(ivBytes, 0, concat, 0, ivBytes.length);
-		System.arraycopy(cypherText, 0, concat, ivBytes.length, cypherText.length);
+		System.arraycopy(cipherText, 0, concat, ivBytes.length, cipherText.length);
 
 		return concat;
 	}
@@ -99,13 +99,13 @@ public class SymCrypt {
 	public String decrypt(byte[] stream) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException,
 			InvalidAlgorithmParameterException {
 
-		byte[] iv = new byte[cypher.getBlockSize()];
-		byte[] cypherText = new byte[stream.length - iv.length];
+		byte[] iv = new byte[cipher.getBlockSize()];
+		byte[] cipherText = new byte[stream.length - iv.length];
 
 		System.arraycopy(stream, 0, iv, 0, iv.length);
-		System.arraycopy(stream, iv.length, cypherText, 0, cypherText.length);
+		System.arraycopy(stream, iv.length, cipherText, 0, cipherText.length);
 
-		cypher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
-		return new String(cypher.doFinal(cypherText));
+		cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+		return new String(cipher.doFinal(cipherText));
 	}
 }

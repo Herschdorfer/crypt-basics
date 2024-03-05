@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Test;
 /**
  * 
  */
-class KeygenTest {
+class KeyGenTest {
 
 	@Test
-	void testRsaPrivateKeygen() {
-		RSAKeygen sut = new RSAKeygen(BigInteger.probablePrime(8, new Random()),
+	void testRsaPrivateKeyGen() {
+		RSAKeyGen sut = new RSAKeyGen(BigInteger.probablePrime(8, new Random()),
 				BigInteger.probablePrime(8, new Random()), BigInteger.valueOf(65537));
 		BigInteger d = sut.generatePrivateKey();
 

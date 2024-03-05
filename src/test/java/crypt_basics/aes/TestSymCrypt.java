@@ -10,7 +10,7 @@ class TestSymCrypt {
 	@Test
 	void testNoPadding() {
 		assertDoesNotThrow(() -> {
-			SymCrypt sut = new SymCrypt("password", "AES/CBC/NOPADDING");
+			SymCrypt sut = new SymCrypt("password", "AES/CBC/NoPadding");
 
 			String shortText = "1234567890123456";
 

@@ -1,10 +1,11 @@
 package crypt_basics.dsa;
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.logging.Logger;
+
+import crypt_basics.hash.Hash;
 
 /**
  * This class represents the Digital Signature Algorithm (DSA). It provides
@@ -15,18 +16,13 @@ public class DSA {
 	/** The Logger */
 	Logger logger = Logger.getLogger(DSA.class.getName());
 
-	// prvate key
 	private BigInteger x;
-
-	// public key
 	private BigInteger y;
-
-	// parameters
 	private BigInteger q;
 	private BigInteger p;
 	private BigInteger g;
 
-	private MessageDigest hash;
+	private Hash hash;
 
 	/**
 	 * Constructor
@@ -36,7 +32,7 @@ public class DSA {
 	 */
 	public DSA(int lBits, int nBits) {
 		try {
-			this.hash = getHash(nBits);
+			this.hash = new Hash(nBits);
 		} catch (NoSuchAlgorithmException e) {
 			logger.severe(e.getMessage());
 			System.exit(1);
@@ -45,24 +41,6 @@ public class DSA {
 		calculatePQ(lBits, nBits);
 		calculateG();
 		generateKeys();
-	}
-
-	/**
-	 * Generate the private and public keys
-	 * 
-	 * @param nBits the number of bits of the hash function
-	 */
-	private MessageDigest getHash(int nBits) throws NoSuchAlgorithmException {
-		switch (nBits) {
-		case 256:
-			return MessageDigest.getInstance("SHA-256");
-		case 384:
-			return MessageDigest.getInstance("SHA-384");
-		case 512:
-			return MessageDigest.getInstance("SHA-512");
-		default:
-			throw new IllegalArgumentException("Invalid number of bits for the hash function");
-		}
 	}
 
 	/**
@@ -131,8 +109,7 @@ public class DSA {
 
 		BigInteger s;
 		do {
-			s = k.modInverse(q).multiply(new BigInteger(hash.digest(new String(m).getBytes())).add(x.multiply(r)))
-					.mod(q);
+			s = k.modInverse(q).multiply(new BigInteger(hash.hash(new String(m).getBytes())).add(x.multiply(r))).mod(q);
 		} while (s.equals(BigInteger.ZERO));
 
 		return new BigInteger[] { r, s };
@@ -162,7 +139,7 @@ public class DSA {
 		}
 
 		BigInteger w = s.modInverse(q);
-		BigInteger u1 = new BigInteger(hash.digest(new String(message).getBytes())).multiply(w).mod(q);
+		BigInteger u1 = new BigInteger(hash.hash(new String(message).getBytes())).multiply(w).mod(q);
 		BigInteger u2 = r.multiply(w).mod(q);
 		BigInteger v = g.modPow(u1, p).multiply(y.modPow(u2, p)).mod(p).mod(q);
 

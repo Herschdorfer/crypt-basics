@@ -52,10 +52,10 @@ public class Server {
 	 */
 	private void run() {
 		// open TCP Socket
-		try (ServerSocket serversocket = new ServerSocket(port)) {
+		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			logger.info("server socket open, waiting for clients");
-			while (serversocket.isBound()) {
-				Socket s1 = serversocket.accept();
+			while (serverSocket.isBound()) {
+				Socket s1 = serverSocket.accept();
 				logger.info("client is here");
 				InputStream stream = s1.getInputStream();
 				while (s1.isConnected()) {
