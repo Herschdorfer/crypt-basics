@@ -11,14 +11,34 @@ import org.junit.jupiter.api.Test;
 
 class TestSymCrypt {
 
+	private IvParameterSpec createIv() {
+		SecureRandom random = new SecureRandom();
+		byte[] ivBytes = new byte[16];
+		random.nextBytes(ivBytes);
+		IvParameterSpec iv = new IvParameterSpec(ivBytes);
+		return iv;
+	}
+	
 	@Test
-	void test() {
+	void testNoPadding() {
 		assertDoesNotThrow(() -> {
 			SymCrypt sut = new SymCrypt("password", "AES/CBC/NOPADDING");
 
 			String shortText = "1234567890123456";
 			
-			IvParameterSpec iv = new IvParameterSpec(SecureRandom.getSeed(16));
+			IvParameterSpec iv = createIv();
+			byte[] temp = sut.encrypt(shortText, iv);
+			assertEquals(shortText, sut.decrypt(temp, iv));
+		});
+	}
+	
+	void testPadding() {
+		assertDoesNotThrow(() -> {
+			SymCrypt sut = new SymCrypt("password", "AES/CBC/PKCS5Padding");
+
+			String shortText = "12345678901234566";
+			
+			IvParameterSpec iv = createIv();
 			byte[] temp = sut.encrypt(shortText, iv);
 			assertEquals(shortText, sut.decrypt(temp, iv));
 		});
@@ -40,7 +60,7 @@ class TestSymCrypt {
 					like Aldus PageMaker including versions of Lorem Ipsum.
 					""";
 
-			IvParameterSpec iv = new IvParameterSpec(SecureRandom.getSeed(16));
+			IvParameterSpec iv = createIv();
 			byte[] temp = sut.encrypt(longString, iv);
 			assertEquals(longString, sut.decrypt(temp, iv));
 		});
