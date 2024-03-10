@@ -1,0 +1,10 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "herschdorfer",
+        "projectKey": "Herschdorfer_crypt-basics"
+    },
+    "cSpell.words": [
+        "Hmac"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
