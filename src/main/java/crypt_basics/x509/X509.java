@@ -12,9 +12,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -112,7 +109,7 @@ public class X509 {
 	 * @throws NoSuchProviderException
 	 * @throws SignatureException
 	 */
-	public void verifCert(X509Certificate cert) throws InvalidKeyException, CertificateException,
+	public void verifyCert(X509Certificate cert) throws InvalidKeyException, CertificateException,
 			NoSuchAlgorithmException, NoSuchProviderException, SignatureException {
 		cert.checkValidity(new Date());
 		cert.verify(keyPair.getPublic());

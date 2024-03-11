@@ -31,10 +31,10 @@ class X509Test {
 			assertTrue(cert.getNotAfter().after(cert.getNotBefore()));
 			assertEquals(java.math.BigInteger.valueOf(1), cert.getSerialNumber());
 
-			x509.verifCert(cert);
-			
+			x509.verifyCert(cert);
+
 			x509.readCert(cert);
-			
+
 		});
 
 	}
