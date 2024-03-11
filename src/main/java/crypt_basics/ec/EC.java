@@ -94,31 +94,34 @@ public class EC {
 	public ECPoint pointAddition(ECPoint p1, ECPoint p2) {
 
 		ECPoint result = new ECPoint();
-		BigInteger calc = BigInteger.ZERO;
-		BigInteger three = new BigInteger("3");
-		boolean isNotDone = true;
+		BigInteger calc;
+		BigInteger three = BigInteger.valueOf(3L);
 
+		// 0 + p2 = p2
 		if (p1.equals(new ECPoint())) {
-			result = p2;
-			isNotDone = false;
+			return p2;
 		}
 
-		if ((p2.equals(new ECPoint())) && (isNotDone)) {
-			result = p1;
-			isNotDone = false;
+		// p1 + 0 = p1
+		if (p2.equals(new ECPoint())) {
+			return p1;
 		}
 
-		if (isNotDone) {
-			if (p1.equals(p2)) {
-				calc = three.multiply(p1.x.multiply(p1.x)).add(this.curveCoeffA)
-						.multiply((p1.y.multiply(BigInteger.TWO)).modInverse(this.field));
-			} else {
-				calc = p2.y.subtract(p1.y).multiply(p2.x.subtract(p1.x).modInverse(this.field));
-			}
-
-			result.x = calc.multiply(calc).subtract(p1.x).subtract(p2.x).mod(this.field);
-			result.y = calc.multiply(p1.x.subtract(result.x)).subtract(p1.y).mod(this.field);
+		if (p1.equals(p2)) {
+			// Special case for doubling
+			// calc = (3 * p1.x^2 + this.curveCoeffA) * (2 * p1.y)^-1 mod this.field
+			calc = (three.multiply(p1.getX().pow(2)).add(this.curveCoeffA))
+					.multiply((p1.getY().multiply(BigInteger.TWO)).modInverse(this.field));
+		} else {
+			// Normal case
+			// calc = (p2.y - p1.y) * (p2.x - p1.x)^-1 mod this.field
+			calc = p2.getY().subtract(p1.getY()).multiply(p2.getX().subtract(p1.getX()).modInverse(this.field));
 		}
+
+		// result.x = calc^2 - p1.x - p2.x mod this.field
+		result.x = calc.pow(2).subtract(p1.getX()).subtract(p2.getX()).mod(this.field);
+		// result.y = calc * (p1.x - result.x) - p1.y mod this.field
+		result.y = calc.multiply(p1.getX().subtract(result.getX())).subtract(p1.getY()).mod(this.field);
 
 		return result;
 	}
