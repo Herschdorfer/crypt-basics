@@ -24,6 +24,7 @@ public class SymCrypt {
 
 	private Cipher cipher;
 	private SecretKey key;
+	private SecureRandom random;
 
 	/**
 	 * Constructs a SymCrypt object with the specified password and algorithm.
@@ -44,6 +45,8 @@ public class SymCrypt {
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 		PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, cipher.getBlockSize() * 8);
 		key = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
+		
+		random = new SecureRandom();
 	}
 
 	/**
@@ -52,7 +55,6 @@ public class SymCrypt {
 	 * @return a randomly generated IV
 	 */
 	private IvParameterSpec createIv() {
-		SecureRandom random = new SecureRandom();
 		byte[] ivBytes = new byte[cipher.getBlockSize()];
 		random.nextBytes(ivBytes);
 		return new IvParameterSpec(ivBytes);
