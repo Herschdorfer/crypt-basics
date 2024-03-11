@@ -26,6 +26,10 @@ public class EC {
 		public ECPoint(BigInteger x, BigInteger y) {
 			this.x = x;
 			this.y = y;
+			
+			if (!isOnCurve()) {
+				throw new IllegalArgumentException("Point is not on the curve");
+			}
 		}
 
 		/**
@@ -56,14 +60,21 @@ public class EC {
 		public String toString() {
 			return String.format("x: %s, x: %s", x.toString(), y.toString());
 		}
+
+		public boolean isOnCurve() {
+			return (y.pow(2).subtract(x.pow(3).add(curveCoeffA.multiply(x)).add(curveCoeffB)).mod(field)
+					.compareTo(BigInteger.ZERO) == 0);
+		}
 	}
 
 	private BigInteger field;
 	private BigInteger curveCoeffA;
+	private BigInteger curveCoeffB;
 
-	public EC(BigInteger field, BigInteger curveCoeffA) {
+	public EC(BigInteger field, BigInteger curveCoeffA, BigInteger curveCoeffB) {
 		this.field = field;
 		this.curveCoeffA = curveCoeffA;
+		this.curveCoeffB = curveCoeffB;
 	}
 
 	/**
