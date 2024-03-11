@@ -13,6 +13,7 @@ import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bouncycastle.asn1.x500.X500Name;
@@ -94,9 +95,10 @@ public class X509 {
 		logger.info(cert.getSigAlgName());
 		logger.info(cert.getIssuerX500Principal().getName());
 		logger.info(cert.getSubjectX500Principal().getName());
-		logger.info(cert.getNotAfter().toString());
-		logger.info(cert.getNotBefore().toString());
-		logger.info(cert.getSerialNumber().toString());
+
+		logger.log(Level.INFO, () -> String.format("%s", cert.getNotAfter()));
+		logger.log(Level.INFO, () -> cert.getNotBefore().toString());
+		logger.log(Level.INFO, () -> cert.getSerialNumber().toString());
 	}
 
 	/**
