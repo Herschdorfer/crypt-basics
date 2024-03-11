@@ -23,33 +23,6 @@ public class RSA {
 	}
 
 	/**
-	 * Constructs an RSA object with randomly generated prime numbers of the
-	 * specified bit length and the given public exponent. The private key is
-	 * generated automatically.
-	 *
-	 * @param bits the bit length of the prime numbers
-	 * @param e    the public exponent
-	 */
-	public RSA(int bits, BigInteger e) {
-		this.keyGen = new RSAKeyGen(BigInteger.probablePrime(bits, new java.util.Random()),
-				BigInteger.probablePrime(bits, new java.util.Random()), e);
-		this.keyGen.generatePrivateKey();
-	}
-
-	/**
-	 * Constructs an RSA object with randomly generated prime numbers of the
-	 * specified bit length and the default public exponent (65537). The private key
-	 * is generated automatically.
-	 *
-	 * @param bits the bit length of the prime numbers
-	 */
-	public RSA(int bits) {
-		this.keyGen = new RSAKeyGen(BigInteger.probablePrime(bits, new java.util.Random()),
-				BigInteger.probablePrime(bits, new java.util.Random()), BigInteger.valueOf(65537));
-		this.keyGen.generatePrivateKey();
-	}
-
-	/**
 	 * Encrypts the given message using the RSA algorithm.
 	 *
 	 * @param m the message to be encrypted
