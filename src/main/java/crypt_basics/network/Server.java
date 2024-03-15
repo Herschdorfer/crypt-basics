@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Level;
@@ -26,6 +28,8 @@ public class Server {
 
 	/** the server thread */
 	private Thread serverThread;
+
+	private List<Thread> threadList = new ArrayList<>();
 
 	/**
 	 * Constructs a Server object with the specified port.
@@ -56,36 +60,69 @@ public class Server {
 			logger.info("server socket open, waiting for clients");
 			while (serverSocket.isBound()) {
 				Socket s1 = serverSocket.accept();
-				logger.info("client is here");
+
+				/**
+				 * Create a new thread for each client connection to receive messages from them
+				 */
+				logger.log(Level.INFO, "client is here {0}:{1}", new Object[] { s1.getInetAddress(), s1.getPort() });
 				InputStream stream = s1.getInputStream();
-				while (s1.isConnected()) {
-					receive(s1, stream);
-				}
+				Thread clientThread = new Thread(new ClientRunner(stream));
+				clientThread.start();
+
+				// add the client thread to the list for later eg. shutdown
+				threadList.add(clientThread);
 			}
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "server socket error", e);
+		} finally {
+			shutdown();
 		}
 	}
 
 	/**
-	 * Receives a message from the client and adds it to the message queue.
-	 *
-	 * @param socket the client socket
-	 * @param stream the input stream to read the message from
-	 * @throws IOException if an I/O exception occurs while receiving the message
+	 * Shuts down the server and stops the client threads.
 	 */
-	private void receive(Socket socket, InputStream stream) throws IOException {
-		byte[] buffer = new byte[1024];
-		int bytesRead;
-		try {
-			while ((bytesRead = stream.read(buffer)) != -1) {
-				String msg = new String(buffer, 0, bytesRead);
-				msgQueue.add(msg);
-				logger.log(Level.INFO, msg);
+	private void shutdown() {
+		for (Thread t : threadList) {
+			t.interrupt();
+		}
+		threadList.clear();
+	}
+
+	/**
+	 * The ClientRunner class represents a runnable task that receives messages from
+	 * a client and adds them to the message queue.
+	 */
+	class ClientRunner implements Runnable {
+		private InputStream stream;
+
+		public ClientRunner(InputStream stream) {
+			this.stream = stream;
+		}
+
+		@Override
+		public void run() {
+			receive(stream);
+		}
+
+		/**
+		 * Receives a message from the client and adds it to the message queue.
+		 *
+		 * @param stream the input stream to read the message from
+		 * @throws IOException if an I/O exception occurs while receiving the message
+		 */
+		private void receive(InputStream stream) {
+			byte[] buffer = new byte[1024];
+			int bytesRead;
+			try {
+				while ((bytesRead = stream.read(buffer)) != -1) {
+					String msg = new String(buffer, 0, bytesRead);
+					msgQueue.add(msg);
+					logger.log(Level.INFO, msg);
+				}
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "client socket error", e);
 			}
-		} catch (IOException e) {
-			logger.info("disconnect");
-			socket.close();
 		}
 	}
 
