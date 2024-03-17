@@ -5,14 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Test the client server communication
- */
 class ClientServerTest {
 
-	/**
-	 * Test the client server communication
-	 */
 	@Test
 	void test() {
 		Server server = new Server(8080);
