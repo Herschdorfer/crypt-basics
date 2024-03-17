@@ -39,14 +39,15 @@ public class SymCrypt {
 	public SymCrypt(String password, String algorithm)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException {
 		cipher = Cipher.getInstance(algorithm);
+		random = new SecureRandom();
 
-		byte[] salt = SecureRandom.getSeed(cipher.getBlockSize());
+		byte[] salt = new byte[cipher.getBlockSize()];
+		random.nextBytes(salt);
 
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 		PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, cipher.getBlockSize() * 8);
 		key = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
-		
-		random = new SecureRandom();
+
 	}
 
 	/**
