@@ -52,15 +52,9 @@
 \begin{document}
 
 \include{titlepage}
-\include{declaration}
 
 \pagestyle{scrplain}
 \pagenumbering{roman}       % for preliminary pages; also resets counter
-
-\include{preface}           % Optional
-\include{abstract}          % English and German abstract
-\include{glossary}          % Glossary
-\include{keywords}          % Keywords
 
 \tableofcontents
 \clearpage
@@ -70,13 +64,13 @@
 \pagestyle{scrheadings}
 \pagenumbering{arabic}      % for main pages
 
-\include{chapter1}          % Introduction
-\include{chapter2}          % Background
+\include{intro}          % Introduction
+\include{rsa}          % Background
 
 %
 %% ....
 
-\printbibliography
+\printbibliography[heading]
 
 \listoffigures
 \listoftables

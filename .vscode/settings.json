@@ -7,6 +7,6 @@
         "Hmac"
     ],
     "java.configuration.updateBuildConfiguration": "interactive",
-    "latex-workshop.latex.outDir": "%DIR%/out",
     "latex-workshop.latex.build.forceRecipeUsage": false,
+    "cSpell.language": "en,de",
 }
