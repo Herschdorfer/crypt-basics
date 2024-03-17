@@ -1,0 +1,89 @@
+%!TEX program = lualatex
+
+% --- General Setup ---------------------------------------------
+
+\documentclass[11pt,a4paper,oneside,listof=totoc]{scrreprt}
+\usepackage{fontspec}
+
+% select correct document language here
+\usepackage[english,ngerman]{babel}
+
+\usepackage[bf,sf]{subfigure}
+\renewcommand{\subfigtopskip}{0mm}
+\renewcommand{\subfigcapmargin}{0mm}
+
+\usepackage{url}
+\usepackage{latexsym}
+\usepackage{geometry}         % define pagesize in more detail
+\usepackage[
+  headsepline,automark
+  ] {scrlayer-scrpage}        % nicer headers and footers
+\usepackage{colortbl}         % define colored backgrounds for tables
+
+\usepackage{scrhack}          % address compatibility issues with listings
+\usepackage{listings}         % nicer code formatting
+\lstset{basicstyle=\ttfamily,breaklines=true}
+
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalize, noabbrev]{cleveref}
+\usepackage{abstract}
+\usepackage{csquotes}
+\usepackage{blindtext}
+
+\usepackage[style=trad-alpha]{biblatex}
+\addbibresource{thesis.bib}
+
+\geometry{a4paper,left=30mm,right=25mm, top=30mm, bottom=30mm}
+
+\setlength{\parskip}{3pt plus 1pt minus 0pt} % vert. space before a paragraph
+
+\setcounter{tocdepth}{1}       % lowest section level entered in ToC
+\setcounter{secnumdepth}{2}    % lowest section level still numbered
+
+\chead{}
+\ohead{\headmark}
+
+\cfoot*{}                      % page number not in the center...
+\ofoot*{\pagemark}             % but on the outer side
+
+% --- Start of Document ----------------------------------------
+
+\begin{document}
+
+\include{titlepage}
+\include{declaration}
+
+\pagestyle{scrplain}
+\pagenumbering{roman}       % for preliminary pages; also resets counter
+
+\include{preface}           % Optional
+\include{abstract}          % English and German abstract
+\include{glossary}          % Glossary
+\include{keywords}          % Keywords
+
+\tableofcontents
+\clearpage
+
+%--- Include your chapters here ----------
+
+\pagestyle{scrheadings}
+\pagenumbering{arabic}      % for main pages
+
+\include{chapter1}          % Introduction
+\include{chapter2}          % Background
+
+%
+%% ....
+
+\printbibliography
+
+\listoffigures
+\listoftables
+\lstlistoflistings
+
+\appendix
+\include{appendix}		   % other appendices
+
+\end{document}
+
