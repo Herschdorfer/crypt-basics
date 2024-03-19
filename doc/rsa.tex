@@ -1,9 +1,24 @@
 \chapter{RSA}
 \label{chap:back}
 
-\section[Implementierung]
-asdsadsadsda
+\section{Implementierung}
+Die RSA Implementierung ist in zwei Klassen aufgeteilt.
+\begin{itemize}
+	\item Die Klasse \texttt{RSAKeyGen} ist für die Schlüsselerzeugung zuständig.
+	\item Die Klasse \texttt{RSA} ist für die Verschlüsselung und Entschlüsselung zuständig.
+\end{itemize}
 
-\section[Parameter]
-asdsadasdasasd
+\subsection{Klasse: RSAKeyGen}
+Der Constructor der Klasse \texttt{RSAKeyGen} erzeugt $\Phi(n)$ und verwirft danach $n$, $p$ und $q$. $\Phi(n)$ wird für die Schlüsselerzeugung benötigt. Der Exponent $e$ wird auf Feld der Klasse \texttt{RSAKeyGen} gespeichert.
 
+Die Methode \texttt{generatePrivateKey} erzeugt ein den privaten Schlüssel. Dazu wird der Exponent $e$ und $\Phi(n)$ benötigt. Der private Schlüssel wird auf einem Feld der Klasse \texttt{RSAKeyGen} gespeichert.
+
+\subsection{Klasse: RSA}
+Der Constructor der Klasse \texttt{RSA} erzeugt ein Objekt der Klasse \texttt{RSAKeyGen} und ruft die Methode \texttt{generatePrivateKey} auf.
+Danach kann an der Instanz der Klasse \texttt{RSA} die Methode \texttt{encrypt} aufgerufen werden. Diese Methode verschlüsselt den übergebenen Text und gibt das Ergebnis zurück.
+Und vice-versa kann die Methode \texttt{decrypt} aufgerufen werden, um den verschlüsselten Text zu entschlüsseln.
+
+\section{Parameter}
+Die Parameter der Klasse \texttt{RSAKeyGen} sind vom Typ \texttt{BigInteger} und können somit Bitgrößen wie 1024 oder 2048 Bit verarbeiten. Der Exponent $e$ kann entweder 65537 oder beliebig sein, je nach verwendetem Constructor. 65537 ist ein Standardwert für $e$ und wird in der Praxis oft verwendet.
+
+Die Verschlüsselung ist nicht optimal implementiert, da jeder Character in einem String einzeln verschlüsselt wird. Damit wird jeder Character mit dem öffentlichen Schlüssel potenziert wird und damit die Bitröße von 8 teilweise deutlich überschreitet. Die Verschlüsselung ist daher nicht effizient und kann bei großen Texten zu Problemen führen.
