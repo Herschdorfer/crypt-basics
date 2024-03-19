@@ -1,0 +1,43 @@
+\chapter{DSA}
+
+\section{Implementierung}
+
+\subsection{Initialisierung}
+Die DSA Implementierung stellt einen Constructor bereit, welchem die Bitgößen für $l$ und $n$ übergeben werden. Der Constructor wählt aus der Hash Klasse einen Algorithmus der Größe $n$-Bits aus. Danach werden drei Funktionen aufgerufen:
+\begin{itemize}
+    \item \texttt{generatePQ} erzeugt die Primzahlen $p$ und $q$.
+    \item \texttt{generateG} erzeugt den Generator $g$.
+    \item \texttt{generateKeys} erzeugt den öffentlichen Schlüssel $y$.
+\end{itemize}
+
+\subsubsection{generatePQ}
+Die Parameter $l$ und $n$ werden für die Erzeugung von $p$ und $q$ benötigt. Die Methode \texttt{generatePQ} erzeugt $p$ und $q$ und speichert diese in den Feldern \texttt{p} und \texttt{q}.
+
+Zuerst wird $q$ erzeugt von der Länger $n$-Bits. Danach wird ein Initalwert von $p$ erzeugt. Da $p$ ein multiplikatives Vielfaches von $q$ plus 1 sein muss, wird $p$ um $l-n$ Bits nach links geschoben (was einer Multiplikation von $q$ mit $2^{l-n}$ entspricht) und um 1 erhöht. Danach wird solange $q$ auf $p$ addiert, bis $p$ eine Primzahl ist.
+Falls $q$ größer als $l$ Bits wird, ein neues $q$ erzeugt und der Vorgang wiederholt.
+
+\subsubsection{generateG}
+Der Einfachheit halber wird $h$ auf 2 gesetzt. Danach wird $g$ erzeugt, indem $h^{(p-1)/q} \mod p$ berechnet wird. Falls das Ergebnis 1 ist, wird $g$ neu berechnet.
+
+\subsubsection{generateKeys}
+Die Methode \texttt{generateKeys} erzeugt den öffentlichen Schlüssel $y$ und den privaten Schlüssel $x$. $x$ wird zufällig erzeugt in $\{1 ... q-1$\}. $y$ wird berechnet, indem $g^x \mod p$ berechnet wird.
+
+\subsection{Signatur}
+Zuerst wird $k$ zufällig erzeugt in $\{1 ... q-1\}$. Danach wird $r$ berechnet, indem $g^k \mod p \mod q$ berechnet wird. Falls $r = 0$ wird $k$ neu erzeugt und der Vorgang wiederholt. Danach wird $s$ berechnet, indem $k^{-1} (H(m) + x \cdot r) \mod q$ berechnet wird. Falls $s = 0$ wird $k$ neu erzeugt und der Vorgang wiederholt. $\{ r , s \}$ ist die Signatur.
+
+\subsection{Verifikation}
+Zuerst wird $w$ berechnet, indem $s^{-1} \mod q$ berechnet wird. Danach wird $u_1$ berechnet, indem $H(m) \cdot w \mod q$ berechnet wird. $u_2$ wird berechnet, indem $r \cdot w \mod q$ berechnet wird. $v$ ergibt sich aus $g^{u_1} \cdot y^{u_2} \mod p \mod q$ berechnet wird. Die Signatur ist gültig, wenn $v = r$ ist.
+
+\section{Parameter}
+Die Parameter $l$ und $n$ werden im Constructor übergeben. $l$ ist die Länge des Primzahl $p$ und $n$ ist die Länge des Primzahl $q$. Die Länge von $p$ und $q$ ist in Bit angegeben.
+
+Zulässig sind folgende Kombinationen:
+\begin{itemize}
+    \item $l = 1024, n = 160$
+    \item $l = 2048, n = 224$
+    \item $l = 2048, n = 256$
+    \item $l = 3072, n = 256$
+\end{itemize}
+
+In der originalen DSA Spezifikation sind noch weitere Kombinationen mit kleineren $l$ und $n$ angegeben. Diese sind jedoch unsicher und als obsolet zu betrachten.
+

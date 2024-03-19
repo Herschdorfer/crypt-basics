@@ -4,6 +4,7 @@
 
 \documentclass[11pt,a4paper,oneside,listof=totoc]{scrreprt}
 \usepackage{fontspec}
+\usepackage{amsmath}
 
 % select correct document language here
 \usepackage[english,ngerman]{babel}
@@ -64,8 +65,10 @@
 \pagestyle{scrheadings}
 \pagenumbering{arabic}      % for main pages
 
-\include{intro}          % Introduction
-\include{rsa}          % Background
+\include{intro}
+\include{rsa}
+\include{ec}
+\include{dsa}
 
 %
 %% ....

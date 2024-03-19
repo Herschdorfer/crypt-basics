@@ -31,6 +31,23 @@ public class DSA {
 	 * @param nBits the number of bits of the hash function
 	 */
 	public DSA(int lBits, int nBits) {
+
+		if (lBits == 1024) {
+			if (nBits != 160) {
+				throw new IllegalArgumentException("Invalid number of bits for n.");
+			}
+		} else if (lBits == 2048) {
+			if (nBits != 224 && nBits != 256) {
+				throw new IllegalArgumentException("Invalid number of bits for n.");
+			}
+		} else if (lBits == 3072) {
+			if (nBits != 256) {
+				throw new IllegalArgumentException("Invalid number of bits for n.");
+			}
+		} else {
+			throw new IllegalArgumentException("Invalid number of bits for l.");
+		}
+
 		try {
 			this.hash = new Hash(nBits);
 		} catch (NoSuchAlgorithmException e) {
@@ -74,19 +91,31 @@ public class DSA {
 	 */
 	private void calculatePQ(int lBits, int nBits) {
 
-		// generate a random prime number q
-		this.q = BigInteger.probablePrime(nBits, new SecureRandom());
-
-		// expand p to the desired bit length
-		p = q.shiftLeft(lBits - nBits).add(BigInteger.ONE);
+		generateStartValues(lBits, nBits);
 
 		// make p a prime number
 		while (!p.isProbablePrime(10)) {
 			p = p.add(q);
+
+			// if p is too large, restart the process
 			if (p.bitLength() > lBits) {
-				p = p.subtract(BigInteger.ONE.shiftLeft(lBits - nBits));
+				generateStartValues(lBits, nBits);
 			}
 		}
+	}
+
+	/**
+	 * Generate the start values p and q.
+	 * 
+	 * @param lBits the number of bits for p.
+	 * @param nBits the number of bits for q.
+	 */
+	private void generateStartValues(int lBits, int nBits) {
+		// generate a random prime number q
+		q = BigInteger.probablePrime(nBits, new SecureRandom());
+
+		// expand p to the desired bit length
+		p = q.shiftLeft(lBits - nBits).add(BigInteger.ONE);
 	}
 
 	/**
