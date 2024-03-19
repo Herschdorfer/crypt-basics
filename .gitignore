@@ -6,4 +6,15 @@
 .classpath
 .project
 
-doc/out
+# latex
+*.aux
+*.bcf
+*.gz
+*.lof
+*.log
+*.lol
+*.lot
+*.out
+*.pdf
+*.run.xml
+*.toc
