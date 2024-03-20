@@ -4,9 +4,12 @@
         "projectKey": "Herschdorfer_crypt-basics"
     },
     "cSpell.words": [
+        "Bitgrößen",
+        "Bitröße",
         "Hmac"
     ],
     "java.configuration.updateBuildConfiguration": "interactive",
-    "latex-workshop.latex.build.forceRecipeUsage": false,
+    "latex-workshop.latex.recipe.default": "latexmk (latexmkrc)",
+    "latex-workshop.latex.outDir": "%DIR%/out",
     "cSpell.language": "en,de",
 }

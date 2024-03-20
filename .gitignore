@@ -7,6 +7,8 @@
 .project
 
 # latex
+**/int/*
+**/out/*
 *.aux
 *.bcf
 *.gz
