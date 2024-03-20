@@ -19,7 +19,6 @@ public class RSA {
 	 */
 	public RSA(BigInteger p, BigInteger q, BigInteger e) {
 		this.keyGen = new RSAKeyGen(p, q, e);
-		this.keyGen.generatePrivateKey();
 	}
 
 	/**
@@ -31,7 +30,6 @@ public class RSA {
 	 */
 	public RSA(BigInteger p, BigInteger q) {
 		this.keyGen = new RSAKeyGen(p, q, BigInteger.valueOf(65537));
-		this.keyGen.generatePrivateKey();
 	}
 
 	/**

@@ -8,16 +8,18 @@ Die RSA Implementierung ist in zwei Klassen aufgeteilt.
 \end{itemize}
 
 \subsection{Klasse: RSAKeyGen}
-Der Constructor der Klasse \texttt{RSAKeyGen} erzeugt $\Phi(n)$ und verwirft danach $n$, $p$ und $q$. $\Phi(n)$ wird für die Schlüsselerzeugung benötigt. Der Exponent $e$ wird auf Feld der Klasse \texttt{RSAKeyGen} gespeichert.
-
-Die Methode \texttt{generatePrivateKey} erzeugt ein den privaten Schlüssel. Dazu wird der Exponent $e$ und $\Phi(n)$ benötigt. Der private Schlüssel wird auf einem Feld der Klasse \texttt{RSAKeyGen} gespeichert.
+Der Constructor der Klasse \texttt{RSAKeyGen} erzeugt $n = p*q$ und $\Phi(n) = (p-1)*(q-1)$ und $d = e^{-1} \mod \Phi(n)$ \cite{rfc8017}. Danach werden $p$, $q$ und $\Phi(n)$ verworfen. Der Exponent $e$ wird auf Feld der Klasse \texttt{RSAKeyGen} gespeichert.
 
 \subsection{Klasse: RSA}
-Der Constructor der Klasse \texttt{RSA} erzeugt ein Objekt der Klasse \texttt{RSAKeyGen} und ruft die Methode \texttt{generatePrivateKey} auf.
-Danach kann an der Instanz der Klasse \texttt{RSA} die Methode \texttt{encrypt} aufgerufen werden. Diese Methode verschlüsselt den übergebenen Text und gibt das Ergebnis zurück.
-Und vice-versa kann die Methode \texttt{decrypt} aufgerufen werden, um den verschlüsselten Text zu entschlüsseln.
+Der Constructor der Klasse \texttt{RSA} erzeugt ein Objekt der Klasse \texttt{RSAKeyGen}.
+
+\subsubsection{Verschlüsselung}
+Die Verschlüsselung erfolgt durch die Methode \texttt{encrypt}. Das übergebene \texttt{char} Array wird einzeln wird mit dem öffentlichen Schlüssel potenziert \cite{rfc8017} und und in einem Array vom Typ \texttt{BigInteger} zurückgegeben.
+
+\subsubsection{Entschlüsselung}
+Die Entschlüsselung erfolgt analog zu Verschlüsselung, jedoch wird mit dem privaten Schlüssel potenziert. Eingabe ist ein Array vom Typ \texttt{BigInteger} und die Ausgabe ist ein \texttt{char} Array.
 
 \section{Parameter}
-Die Parameter der Klasse \texttt{RSAKeyGen} sind vom Typ \texttt{BigInteger} und können somit Bitgrößen wie 1024 oder 2048 Bit verarbeiten. Der Exponent $e$ kann entweder 65537 oder beliebig sein, je nach verwendetem Constructor. 65537 ist ein Standardwert für $e$ und wird in der Praxis oft verwendet.
+Die Parameter der Klasse \texttt{RSA} sind vom Typ \texttt{BigInteger} und können somit Bitgrößen wie 1024 oder 2048 Bit oder mehr verarbeiten. Der Exponent $e$ kann entweder 65537 oder beliebig sein, je nach verwendetem Constructor. 65537 ist ein Standardwert für $e$ und wird in der Praxis oft verwendet.
 
 Die Verschlüsselung ist nicht optimal implementiert, da jeder Character in einem String einzeln verschlüsselt wird. Damit wird jeder Character mit dem öffentlichen Schlüssel potenziert wird und damit die Bitröße von 8 teilweise deutlich überschreitet. Die Verschlüsselung ist daher nicht effizient und kann bei großen Texten zu Problemen führen.

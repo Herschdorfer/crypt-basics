@@ -8,7 +8,6 @@ import java.math.BigInteger;
 public class RSAKeyGen {
 
 	private BigInteger n;
-	private BigInteger phiN;
 	private BigInteger e;
 	private BigInteger d;
 
@@ -22,18 +21,9 @@ public class RSAKeyGen {
 	 */
 	public RSAKeyGen(BigInteger p, BigInteger q, BigInteger e) {
 		n = p.multiply(q);
-		phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
-		this.e = e;
-	}
-
-	/**
-	 * Generates the private key using the public exponent and the Phi(n) value.
-	 *
-	 * @return the private key
-	 */
-	public BigInteger generatePrivateKey() {
+		BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 		this.d = e.modInverse(phiN);
-		return d;
+		this.e = e;
 	}
 
 	/**

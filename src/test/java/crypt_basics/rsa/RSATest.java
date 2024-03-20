@@ -46,4 +46,18 @@ class RSATest {
 
 		generalTest(sut);
 	}
+
+	@Test
+	void testRSA2048Bit() {
+		RSA sut = new RSA(BigInteger.probablePrime(1024, new Random()), BigInteger.probablePrime(1024, new Random()));
+
+		generalTest(sut);
+	}
+
+	@Test
+	void testRSA4096Bit() {
+		RSA sut = new RSA(BigInteger.probablePrime(2048, new Random()), BigInteger.probablePrime(2048, new Random()));
+
+		generalTest(sut);
+	}
 }
