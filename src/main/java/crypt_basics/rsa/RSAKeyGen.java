@@ -27,18 +27,6 @@ public class RSAKeyGen {
 	}
 
 	/**
-	 * Constructs an RSAKeyGen object with the given prime numbers p and q.
-	 * 
-	 * The public exponent e is set to 65537.
-	 *
-	 * @param p the first prime number
-	 * @param q the second prime number
-	 */
-	public RSAKeyGen(BigInteger p, BigInteger q) {
-		new RSAKeyGen(p, q, BigInteger.valueOf(65537));
-	}
-
-	/**
 	 * Generates the private key using the public exponent and the Phi(n) value.
 	 *
 	 * @return the private key

@@ -23,6 +23,18 @@ public class RSA {
 	}
 
 	/**
+	 * Constructs an RSA object with the given prime numbers. The public exponent is
+	 * set to 65537 and the private key is generated automatically.
+	 *
+	 * @param p the first prime number
+	 * @param q the second prime number
+	 */
+	public RSA(BigInteger p, BigInteger q) {
+		this.keyGen = new RSAKeyGen(p, q, BigInteger.valueOf(65537));
+		this.keyGen.generatePrivateKey();
+	}
+
+	/**
 	 * Encrypts the given message using the RSA algorithm.
 	 *
 	 * @param m the message to be encrypted
