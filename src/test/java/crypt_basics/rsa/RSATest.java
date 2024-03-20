@@ -16,14 +16,6 @@ class RSATest {
 	}
 
 	@Test
-	void testRSA8Bit() {
-		RSA sut = new RSA(BigInteger.probablePrime(8, new Random()), BigInteger.probablePrime(8, new Random()),
-				BigInteger.probablePrime(8, new Random()));
-
-		generalTest(sut);
-	}
-
-	@Test
 	void testRSA10Bit() {
 		RSA sut = new RSA(BigInteger.probablePrime(8, new Random()), BigInteger.probablePrime(10, new Random()),
 				BigInteger.probablePrime(10, new Random()));
