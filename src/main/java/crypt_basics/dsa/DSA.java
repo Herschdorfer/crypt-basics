@@ -32,17 +32,19 @@ public class DSA {
 	 */
 	public DSA(int lBits, int nBits) {
 
+		final String INVALID_N_BITS_ERROR = "Invalid number of bits for n.";
+
 		if (lBits == 1024) {
 			if (nBits != 160) {
-				throw new IllegalArgumentException("Invalid number of bits for n.");
+				throw new IllegalArgumentException(INVALID_N_BITS_ERROR);
 			}
 		} else if (lBits == 2048) {
 			if (nBits != 224 && nBits != 256) {
-				throw new IllegalArgumentException("Invalid number of bits for n.");
+				throw new IllegalArgumentException(INVALID_N_BITS_ERROR);
 			}
 		} else if (lBits == 3072) {
 			if (nBits != 256) {
-				throw new IllegalArgumentException("Invalid number of bits for n.");
+				throw new IllegalArgumentException(INVALID_N_BITS_ERROR);
 			}
 		} else {
 			throw new IllegalArgumentException("Invalid number of bits for l.");

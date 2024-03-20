@@ -105,29 +105,29 @@ public class EC {
 		}
 
 		BigInteger k;
-		ECPoint Q;
+		ECPoint pointQ;
 		if (n.compareTo(BigInteger.ZERO) < 0) {
-			Q = point.minus();
+			pointQ = point.minus();
 			k = n.negate();
 		} else {
-			Q = point;
+			pointQ = point;
 			k = n;
 		}
 
-		ECPoint S = Q;
+		ECPoint pointS = pointQ;
 
 		for (int i = 1; i < k.bitLength(); i++) {
-			S = pointAddition(S, S);
+			pointS = pointAddition(pointS, pointS);
 			if ((k.multiply(BigInteger.valueOf(3))).testBit(i) && !k.testBit(i)) {
-				S = pointAddition(S, Q);
+				pointS = pointAddition(pointS, pointQ);
 			}
 
 			if (!(k.multiply(BigInteger.valueOf(3))).testBit(i) && k.testBit(i)) {
-				S = pointAddition(S, Q.minus());
+				pointS = pointAddition(pointS, pointQ.minus());
 			}
 		}
 
-		return S;
+		return pointS;
 
 	}
 
