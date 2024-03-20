@@ -1,19 +1,20 @@
-%!TEX program = lualatex
+% !TeX program = lualatex
 
 % --- General Setup ---------------------------------------------
 
-\documentclass[11pt,a4paper,oneside,listof=totoc]{scrreprt}
+\documentclass[11pt,a4paper,oneside,listof=totoc,
+  bibliography=totoc]{scrreprt}
 \usepackage{fontspec}
-\usepackage{amsmath}
 
 % select correct document language here
 \usepackage[english,ngerman]{babel}
+
+\usepackage{mathtools}
 
 \usepackage[bf,sf]{subfigure}
 \renewcommand{\subfigtopskip}{0mm}
 \renewcommand{\subfigcapmargin}{0mm}
 
-\usepackage{url}
 \usepackage{latexsym}
 \usepackage{geometry}         % define pagesize in more detail
 \usepackage[
@@ -32,8 +33,25 @@
 \usepackage{csquotes}
 \usepackage{blindtext}
 
-\usepackage[style=trad-alpha]{biblatex}
+% set style=trad-alpha if you want the [HMV04] format
+\usepackage[style=ieee,dashed=false]{biblatex}
 \addbibresource{thesis.bib}
+
+% print (n.d) in bibliography when date information is not available
+% see: https://tex.stackexchange.com/questions/612417
+\renewbibmacro*{date}{%
+  \iffieldundef{year}
+    {\bibstring{nodate}}
+    {\printdate}}
+
+
+% must be loaded after biblatex in order to break urls in
+% bibliography correct
+\usepackage{xurl}
+
+\usepackage[acronym,nopostdot]{glossaries}
+\setlength{\glsdescwidth}{0.90\linewidth}
+
 
 \geometry{a4paper,left=30mm,right=25mm, top=30mm, bottom=30mm}
 
@@ -48,6 +66,10 @@
 \cfoot*{}                      % page number not in the center...
 \ofoot*{\pagemark}             % but on the outer side
 
+\makeindex
+\makeglossaries
+\input{acronyms}
+
 % --- Start of Document ----------------------------------------
 
 \begin{document}
@@ -56,6 +78,14 @@
 
 \pagestyle{scrplain}
 \pagenumbering{roman}       % for preliminary pages; also resets counter
+
+\include{abstract}          % English and German abstract
+
+\setglossarysection{section}  % Acronyms 
+\printglossary[type=\acronymtype,nonumberlist,style=long,
+  nogroupskip=true, title=Abkürzungsverzeichnis]
+
+\include{keywords}          % Keywords
 
 \tableofcontents
 \clearpage
@@ -73,7 +103,7 @@
 %
 %% ....
 
-\printbibliography[heading]
+\printbibliography
 
 \listoffigures
 \listoftables
