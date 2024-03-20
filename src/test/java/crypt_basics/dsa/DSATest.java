@@ -1,5 +1,7 @@
 package crypt_basics.dsa;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 
@@ -19,4 +21,28 @@ class DSATest {
 		generalTest(sut);
 	}
 
+	@Test
+	void invalidLBitsTest() {
+		assertThrows(IllegalArgumentException.class, () -> new DSA(1234, 256));
+	}
+
+	@Test
+	void invalidNBitsTest() {
+		assertThrows(IllegalArgumentException.class, () -> new DSA(2048, 1234));
+	}
+
+	@Test
+	void invalidNBitsForL1024Test() {
+		assertThrows(IllegalArgumentException.class, () -> new DSA(1024, 256));
+	}
+
+	@Test
+	void invalidNBitsForL2048Test() {
+		assertThrows(IllegalArgumentException.class, () -> new DSA(2048, 512));
+	}
+
+	@Test
+	void invalidNBitsForL3072Test() {
+		assertThrows(IllegalArgumentException.class, () -> new DSA(3072, 128));
+	}
 }
