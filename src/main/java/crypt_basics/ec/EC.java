@@ -10,7 +10,7 @@ public class EC {
 		private BigInteger y;
 
 		/**
-		 * A point at infinity
+		 * A point at zero
 		 */
 		public ECPoint() {
 			this.x = BigInteger.ZERO;
@@ -20,13 +20,13 @@ public class EC {
 		/**
 		 * A point on the elliptic curve
 		 * 
-		 * @param x
-		 * @param y
+		 * @param x The x coordinate
+		 * @param y The y coordinate
 		 */
 		public ECPoint(BigInteger x, BigInteger y) {
 			this.x = x;
 			this.y = y;
-			
+
 			if (!isOnCurve()) {
 				throw new IllegalArgumentException("Point is not on the curve");
 			}
@@ -41,8 +41,9 @@ public class EC {
 				return false;
 			}
 
-			return ((this.getX().subtract(((ECPoint) other).getX()).mod(field).compareTo(BigInteger.ZERO) == 0)
-					&& (this.getY().subtract(((ECPoint) other).getY()).mod(field).compareTo(BigInteger.ZERO) == 0));
+			return ((this.getX().subtract(((ECPoint) other).getX()).mod(curveField).compareTo(BigInteger.ZERO) == 0)
+					&& (this.getY().subtract(((ECPoint) other).getY()).mod(curveField)
+							.compareTo(BigInteger.ZERO) == 0));
 		}
 
 		public int hashCode() {
@@ -61,47 +62,80 @@ public class EC {
 			return String.format("x: %s, x: %s", x.toString(), y.toString());
 		}
 
+		/**
+		 * Check if the point is on the curve
+		 */
 		public boolean isOnCurve() {
-			return (y.pow(2).subtract(x.pow(3).add(curveCoeffA.multiply(x)).add(curveCoeffB)).mod(field)
+			return (y.pow(2).subtract(x.pow(3).add(curveA.multiply(x)).add(curveB)).mod(curveField)
 					.compareTo(BigInteger.ZERO) == 0);
+		}
+
+		public ECPoint minus() {
+			return new ECPoint(x, y.negate());
 		}
 	}
 
-	private BigInteger field;
-	private BigInteger curveCoeffA;
-	private BigInteger curveCoeffB;
+	private BigInteger curveField;
+	private BigInteger curveA;
+	private BigInteger curveB;
 
-	public EC(BigInteger field, BigInteger curveCoeffA, BigInteger curveCoeffB) {
-		this.field = field;
-		this.curveCoeffA = curveCoeffA;
-		this.curveCoeffB = curveCoeffB;
+	/**
+	 * An minimal representation of a elliptic curve.
+	 * 
+	 * @param curveField The field of the elliptic curve
+	 * @param curveA     The A parameter of the elliptic curve
+	 * @param curveB     The B parameter of the elliptic curve
+	 */
+	public EC(BigInteger curveField, BigInteger curveA, BigInteger curveB) {
+		this.curveField = curveField;
+		this.curveA = curveA;
+		this.curveB = curveB;
 	}
 
 	/**
 	 * Elliptic curve scalar multiplication
 	 * 
-	 * @return
+	 * @return The product of a scalar and a point
 	 */
-	public ECPoint scalarMultiplication(BigInteger k, ECPoint point) {
+	public ECPoint scalarMultiplication(BigInteger n, ECPoint point) {
 
-		ECPoint result = new ECPoint();
+		// 0 * point(x,y) = 0
+		if (n.equals(BigInteger.ZERO)) {
+			return new ECPoint();
+		}
 
-		int i;
-		int length = k.bitLength();
+		BigInteger k;
+		ECPoint Q;
+		if (n.compareTo(BigInteger.ZERO) < 0) {
+			Q = point.minus();
+			k = n.negate();
+		} else {
+			Q = point;
+			k = n;
+		}
 
-		if ((k.compareTo(BigInteger.ZERO) != 0) && (!point.equals(new ECPoint()))) {
-			for (i = 0; i < length; i++) {
-				if (k.testBit(i)) {
-					result = pointAddition(result, point);
-				}
-				point = pointAddition(point, point);
+		ECPoint S = Q;
+
+		for (int i = 1; i < k.bitLength(); i++) {
+			S = pointAddition(S, S);
+			if ((k.multiply(BigInteger.valueOf(3))).testBit(i) && !k.testBit(i)) {
+				S = pointAddition(S, Q);
+			}
+
+			if (!(k.multiply(BigInteger.valueOf(3))).testBit(i) && k.testBit(i)) {
+				S = pointAddition(S, Q.minus());
 			}
 		}
 
-		return result;
+		return S;
 
 	}
 
+	/**
+	 * Elliptic curve point addition
+	 * 
+	 * @return The sum of two points
+	 */
 	public ECPoint pointAddition(ECPoint p1, ECPoint p2) {
 
 		ECPoint result = new ECPoint();
@@ -120,19 +154,20 @@ public class EC {
 
 		if (p1.equals(p2)) {
 			// Special case for doubling
-			// calc = (3 * p1.x^2 + this.curveCoeffA) * (2 * p1.y)^-1 mod this.field
-			calc = (three.multiply(p1.getX().pow(2)).add(this.curveCoeffA))
-					.multiply((p1.getY().multiply(BigInteger.TWO)).modInverse(this.field));
+			// calc = (3 * p1.x^2 + A) * (2 * p1.y)^-1 mod field
+			calc = (three.multiply(p1.getX().pow(2)).add(this.curveA))
+					.multiply((p1.getY().multiply(BigInteger.TWO)).modInverse(this.curveField));
 		} else {
 			// Normal case
-			// calc = (p2.y - p1.y) * (p2.x - p1.x)^-1 mod this.field
-			calc = p2.getY().subtract(p1.getY()).multiply(p2.getX().subtract(p1.getX()).modInverse(this.field));
+			// calc = (p2.y - p1.y) * (p2.x - p1.x)^-1 mod field
+			calc = p2.getY().subtract(p1.getY()).multiply(p2.getX().subtract(p1.getX()).modInverse(this.curveField));
 		}
 
-		// result.x = calc^2 - p1.x - p2.x mod this.field
-		result.x = calc.pow(2).subtract(p1.getX()).subtract(p2.getX()).mod(this.field);
-		// result.y = calc * (p1.x - result.x) - p1.y mod this.field
-		result.y = calc.multiply(p1.getX().subtract(result.getX())).subtract(p1.getY()).mod(this.field);
+		// result.x = calc^2 - p1.x - p2.x mod field
+		result.x = calc.pow(2).subtract(p1.getX()).subtract(p2.getX()).mod(this.curveField);
+
+		// result.y = calc * (p1.x - result.x) - p1.y mod field
+		result.y = calc.multiply(p1.getX().subtract(result.getX())).subtract(p1.getY()).mod(this.curveField);
 
 		return result;
 	}

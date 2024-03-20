@@ -8,8 +8,9 @@
         "Bitröße",
         "Hmac"
     ],
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "automatic",
     "latex-workshop.latex.recipe.default": "latexmk (latexmkrc)",
     "latex-workshop.latex.outDir": "%DIR%/out",
     "cSpell.language": "en,de",
+    "java.maven.downloadSources": true
 }

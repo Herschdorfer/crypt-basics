@@ -1,10 +1,15 @@
 package crypt_basics.ec;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigInteger;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import crypt_basics.ec.EC.ECPoint;
 
@@ -101,5 +106,121 @@ class ECTest {
 
 		assertEquals(BigInteger.valueOf(80), result.getX());
 		assertEquals(BigInteger.valueOf(87), result.getY());
+	}
+
+	@Test
+	void testMultiplikation_k0() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
+
+		ECPoint result = ec.scalarMultiplication(BigInteger.ZERO, point1);
+
+		assertEquals(BigInteger.ZERO, result.getX());
+		assertEquals(BigInteger.ZERO, result.getY());
+	}
+
+	@Test
+	void testMultiplikation_P0() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+		ECPoint point1 = ec.new ECPoint();
+
+		ECPoint result = ec.scalarMultiplication(BigInteger.TEN, point1);
+
+		assertEquals(BigInteger.ZERO, result.getX());
+		assertEquals(BigInteger.ZERO, result.getY());
+	}
+
+	@Test
+	void testPointNotOnCurve_1() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+
+		BigInteger x = new BigInteger("96");
+		BigInteger y = new BigInteger("31");
+
+		assertThrows(IllegalArgumentException.class, () -> ec.new ECPoint(x, y));
+	}
+
+	@Test
+	void testPointNotOnCurve_2() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+
+		BigInteger x = new BigInteger("95");
+		BigInteger y = new BigInteger("32");
+
+		assertThrows(IllegalArgumentException.class, () -> ec.new ECPoint(x, y));
+	}
+
+	@ParameterizedTest
+	@MethodSource("testData")
+	void testMultiplikation_secP256k1_GM(String expectedX, String expectedY, BigInteger scalar) {
+		EC ec = new EC(new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F", 16),
+				new BigInteger("0"), new BigInteger("7"));
+		ECPoint point1 = ec.new ECPoint(
+				new BigInteger("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798", 16),
+				new BigInteger("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8", 16));
+
+		ECPoint result = ec.scalarMultiplication(scalar, point1);
+
+		ECPoint expected = ec.new ECPoint(new BigInteger(expectedX, 16), new BigInteger(expectedY, 16));
+
+		assertEquals(expected.getX(), result.getX());
+		assertEquals(expected.getY(), result.getY());
+	}
+
+	private static Stream<Arguments> testData() {
+		return Stream.of(
+				Arguments.of(
+						"79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798",
+						"483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8",
+						BigInteger.ONE),
+				Arguments.of(
+						"C6047F9441ED7D6D3045406E95C07CD85C778E4B8CEF3CA7ABAC09B95C709EE5",
+						"1AE168FEA63DC339A3C58419466CEAEEF7F632653266D0E1236431A950CFE52A",
+						new BigInteger("2")),
+				Arguments.of(
+						"79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798",
+						"483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8",
+						new BigInteger("3")));
+	}
+
+	@Test
+	void testAddition_secP256k1_G1G2() {
+		EC ec = new EC(new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F", 16),
+				new BigInteger("0"), new BigInteger("7"));
+		ECPoint point1 = ec.new ECPoint(
+				new BigInteger("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798", 16),
+				new BigInteger("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8", 16));
+		ECPoint point2 = ec.new ECPoint(
+				new BigInteger("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798", 16),
+				new BigInteger("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8", 16));
+
+		ECPoint result = ec.pointAddition(point1, point2);
+
+		assertEquals(new BigInteger(
+				"C6047F9441ED7D6D3045406E95C07CD85C778E4B8CEF3CA7ABAC09B95C709EE5", 16),
+				result.getX());
+		assertEquals(new BigInteger(
+				"1AE168FEA63DC339A3C58419466CEAEEF7F632653266D0E1236431A950CFE52A", 16),
+				result.getY());
+	}
+
+	@Test
+	void testAddition_secP256k1_G1M2G2() {
+		EC ec = new EC(new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F", 16),
+				new BigInteger("0"), new BigInteger("7"));
+		ECPoint point1 = ec.new ECPoint(
+				new BigInteger("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798", 16),
+				new BigInteger("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8", 16));
+		ECPoint point2 = ec.new ECPoint(
+				new BigInteger("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798", 16),
+				new BigInteger("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8", 16));
+
+		ECPoint result = ec.pointAddition(point1, ec.scalarMultiplication(BigInteger.TWO, point2));
+
+		assertEquals(new BigInteger("F9308A019258C31049344F85F89D5229B531C845836F99B08601F113BCE036F9", 16),
+				result.getX());
+		assertEquals(new BigInteger("388F7B0F632DE8140FE337E62A37F3566500A99934C2231B6CB9FD7584B8E672", 16),
+				result.getY());
+
 	}
 }
