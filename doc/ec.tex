@@ -9,12 +9,14 @@ Die Klasse \texttt{EC} repräsentiert eine elliptische Kurve. Sie enthält die K
 \subsubsection{scalarMultiplication}
 Die Skalare Multiplikation erfolgt durch die Methode \texttt{scalarMultiplication}. Der Algorithmus basiert auf der Additions-Subtraktion-Methode. Der Skalar wird in ein \gls{naf} Array nach \cite{enwiki:1153415896} mit $NAF = \{1,0-1\}$ umgewandelt und die Methoden zu Addition und Subtraktion werden aufgerufen \cite{891000}.
 
-\subsubsection{pointAddition}
+\subsubsection{pointAddition/pointSubtraction}
 Die Punktaddition erfolgt durch die Methode \texttt{pointAddition}. Die Methode berechnet die Summe zweier Punkte auf der elliptischen Kurve. Die Methode basiert auf der in \cite{891000} aufgeführten Formel für die Punktaddition auf elliptischen Kurven.
 
-\subsubsection{pointSubtraction}
 Die Punktsubtraktion erfolgt durch die Methode \texttt{pointSubtraction}. Die Methode is nur ein Wrapper für die Punktaddition mit dem negierten Punkt.
 
+\subsection{Klasse: ECPoint}
+Die Klasse \texttt{ECPoint} repräsentiert einen Punkt auf einer elliptischen Kurve. Sie enthält die Koordinaten $x$ und $y$ des Punktes. Die Klasse enthält die Methode \texttt{negate}, die den Punkt negiert und die Methode \texttt{equals}, die zwei Punkte auf Gleichheit prüft. Zusätzlich enthält die Klasse die Methode \texttt{isOnCurve}, die prüft ob der Punkt auf der Kurve liegt.
+
 \section{Parameter}
-asdsadasdasasd
+Die Parameter der Klasse \texttt{EC} sind vom Typ \texttt{BigInteger} und können somit Bitgrößen wie 1024 Bit und mehr verarbeiten. Jedoch wird bei \gls{ec} typischerweise auf Bitgrößen im Bereich von 256 bis 512 gesetzt. Exemplarisch wird in der Implementierung die elliptische Kurve \texttt{secp256k1} als Test-Case verwendet.
 
