@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import crypt_basics.ec.EC.ECPoint;
+import org.junit.jupiter.api.Assertions;
 
 class ECTest {
 
@@ -76,81 +77,30 @@ class ECTest {
 		assertEquals(BigInteger.valueOf(77), result.y);
 	}
 
-	@Test
-	void testMultiplikation_n1() {
+	private static Stream<Arguments> scalarMultiplicationTestCases() {
+		return Stream.of(
+				Arguments.of(BigInteger.valueOf(1), BigInteger.valueOf(95), BigInteger.valueOf(31)),
+				Arguments.of(BigInteger.valueOf(2), BigInteger.valueOf(74), BigInteger.valueOf(77)),
+				Arguments.of(BigInteger.valueOf(3), BigInteger.valueOf(21), BigInteger.valueOf(24)),
+				Arguments.of(BigInteger.valueOf(4), BigInteger.valueOf(24), BigInteger.valueOf(95)),
+				Arguments.of(BigInteger.valueOf(5), BigInteger.valueOf(3), BigInteger.valueOf(91)),
+				Arguments.of(BigInteger.valueOf(6), BigInteger.valueOf(46), BigInteger.valueOf(72)),
+				Arguments.of(BigInteger.valueOf(7), BigInteger.valueOf(84), BigInteger.valueOf(37)),
+				Arguments.of(BigInteger.valueOf(8), BigInteger.valueOf(65), BigInteger.valueOf(32)),
+				Arguments.of(BigInteger.valueOf(9), BigInteger.valueOf(52), BigInteger.valueOf(29)),
+				Arguments.of(BigInteger.valueOf(10), BigInteger.valueOf(80), BigInteger.valueOf(87)));
+	}
+
+	@ParameterizedTest
+	@MethodSource("scalarMultiplicationTestCases")
+	void testScalarMultiplication(BigInteger scalar, BigInteger expectedX, BigInteger expectedY) {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
 
-		ECPoint result = ec.scalarMultiplication(BigInteger.ONE, point1);
+		ECPoint result = ec.scalarMultiplication(scalar, point1);
 
-		assertEquals(BigInteger.valueOf(95), result.x);
-		assertEquals(BigInteger.valueOf(31), result.y);
-	}
-
-	@Test
-	void testMultiplikation_n2() {
-		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
-		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
-
-		ECPoint result = ec.scalarMultiplication(BigInteger.TWO, point1);
-
-		assertEquals(BigInteger.valueOf(74), result.x);
-		assertEquals(BigInteger.valueOf(77), result.y);
-	}
-
-	@Test
-	void testMultiplikation_n3() {
-		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
-		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
-
-		ECPoint result = ec.scalarMultiplication(BigInteger.valueOf(3), point1);
-
-		assertEquals(BigInteger.valueOf(21), result.x);
-		assertEquals(BigInteger.valueOf(24), result.y);
-	}
-
-	@Test
-	void testMultiplikation_n5() {
-		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
-		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
-
-		ECPoint result = ec.scalarMultiplication(BigInteger.valueOf(5), point1);
-
-		assertEquals(BigInteger.valueOf(3), result.x);
-		assertEquals(BigInteger.valueOf(91), result.y);
-	}
-
-	@Test
-	void testMultiplikation_n6() {
-		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
-		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
-
-		ECPoint result = ec.scalarMultiplication(BigInteger.valueOf(6), point1);
-
-		assertEquals(BigInteger.valueOf(46), result.x);
-		assertEquals(BigInteger.valueOf(72), result.y);
-	}
-
-	@Test
-	void testMultiplikation_n7() {
-		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
-		ECPoint point1 = ec.new ECPoint(new BigInteger("3"), new BigInteger("6"));
-
-		ECPoint result = ec.scalarMultiplication(BigInteger.valueOf(7), point1);
-
-		assertEquals(BigInteger.valueOf(80), result.x);
-		assertEquals(BigInteger.valueOf(10), result.y);
-	}
-
-	@Test
-	void testMultiplikation_n10() {
-		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
-		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
-
-		ECPoint result = ec.scalarMultiplication(BigInteger.TEN, point1);
-
-		assertEquals(BigInteger.valueOf(80), result.x);
-		assertEquals(BigInteger.valueOf(87), result.y);
+		Assertions.assertEquals(expectedX, result.x);
+		Assertions.assertEquals(expectedY, result.y);
 	}
 
 	@Test
