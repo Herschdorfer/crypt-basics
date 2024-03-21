@@ -6,15 +6,15 @@ import java.util.Objects;
 public class EC {
 
 	public class ECPoint {
-		private BigInteger x;
-		private BigInteger y;
+		public final BigInteger x;
+		public final BigInteger y;
 
 		/**
 		 * A point at zero
 		 */
 		public ECPoint() {
-			this.x = BigInteger.ZERO;
-			this.y = BigInteger.ZERO;
+			x = BigInteger.ZERO;
+			y = BigInteger.ZERO;
 		}
 
 		/**
@@ -41,21 +41,14 @@ public class EC {
 				return false;
 			}
 
-			return ((this.getX().subtract(((ECPoint) other).getX()).mod(curveField).compareTo(BigInteger.ZERO) == 0)
-					&& (this.getY().subtract(((ECPoint) other).getY()).mod(curveField)
-							.compareTo(BigInteger.ZERO) == 0));
+			ECPoint otherPoint = (ECPoint) other;
+
+			return x.subtract(otherPoint.x).mod(curveField).equals(BigInteger.ZERO)
+					&& y.subtract(otherPoint.y).mod(curveField).equals(BigInteger.ZERO);
 		}
 
 		public int hashCode() {
 			return Objects.hash(x, y);
-		}
-
-		public BigInteger getX() {
-			return x;
-		}
-
-		public BigInteger getY() {
-			return y;
 		}
 
 		public String toString() {
@@ -136,39 +129,38 @@ public class EC {
 	 * 
 	 * @return The sum of two points
 	 */
-	public ECPoint pointAddition(ECPoint p1, ECPoint p2) {
+	public ECPoint pointAddition(ECPoint p0, ECPoint p1) {
 
-		ECPoint result = new ECPoint();
-		BigInteger calc;
-		BigInteger three = BigInteger.valueOf(3L);
+		BigInteger lambda;
 
-		// 0 + p2 = p2
-		if (p1.equals(new ECPoint())) {
-			return p2;
-		}
-
-		// p1 + 0 = p1
-		if (p2.equals(new ECPoint())) {
+		// 0 + p1 = p1
+		if (p0.equals(new ECPoint())) {
 			return p1;
 		}
 
-		if (p1.equals(p2)) {
-			// Special case for doubling
-			// calc = (3 * p1.x^2 + A) * (2 * p1.y)^-1 mod field
-			calc = (three.multiply(p1.getX().pow(2)).add(this.curveA))
-					.multiply((p1.getY().multiply(BigInteger.TWO)).modInverse(this.curveField));
-		} else {
-			// Normal case
-			// calc = (p2.y - p1.y) * (p2.x - p1.x)^-1 mod field
-			calc = p2.getY().subtract(p1.getY()).multiply(p2.getX().subtract(p1.getX()).modInverse(this.curveField));
+		// p0 + 0 = p0
+		if (p1.equals(new ECPoint())) {
+			return p0;
 		}
 
-		// result.x = calc^2 - p1.x - p2.x mod field
-		result.x = calc.pow(2).subtract(p1.getX()).subtract(p2.getX()).mod(this.curveField);
+		if (!p0.equals(p1)) {
+			// Normal case
+			// lambda = (p1.y - p0.y) * (p1.x - p0.x)^-1 mod field
+			lambda = p1.y.subtract(p0.y).multiply(p1.x.subtract(p0.x).modInverse(this.curveField));
+		} else {
+			// Special case for doubling
+			// lambda = (3 * p0.x^2 + A) * (2 * p0.y)^-1 mod field
+			lambda = (BigInteger.valueOf(3).multiply(p0.x.pow(2)).add(this.curveA))
+					.multiply((p0.y.multiply(BigInteger.TWO)).modInverse(this.curveField));
 
-		// result.y = calc * (p1.x - result.x) - p1.y mod field
-		result.y = calc.multiply(p1.getX().subtract(result.getX())).subtract(p1.getY()).mod(this.curveField);
+		}
 
-		return result;
+		// result.x = lambda^2 - p0.x - p1.x mod field
+		BigInteger x = lambda.pow(2).subtract(p0.x).subtract(p1.x).mod(this.curveField);
+
+		// result.y = lambda * (p0.x - result.x) - p0.y mod field
+		BigInteger y = lambda.multiply(p0.x.subtract(x)).subtract(p0.y).mod(this.curveField);
+
+		return new ECPoint(x, y);
 	}
 }

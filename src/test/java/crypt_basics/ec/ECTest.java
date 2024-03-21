@@ -23,8 +23,8 @@ class ECTest {
 
 		ECPoint result = ec.pointAddition(point1, point2);
 
-		assertEquals(BigInteger.valueOf(33), result.getX());
-		assertEquals(BigInteger.valueOf(63), result.getY());
+		assertEquals(BigInteger.valueOf(33), result.x);
+		assertEquals(BigInteger.valueOf(63), result.y);
 	}
 
 	@Test
@@ -35,8 +35,8 @@ class ECTest {
 
 		ECPoint result = ec.pointAddition(point1, point2);
 
-		assertEquals(BigInteger.valueOf(1), result.getX());
-		assertEquals(BigInteger.valueOf(54), result.getY());
+		assertEquals(BigInteger.valueOf(1), result.x);
+		assertEquals(BigInteger.valueOf(54), result.y);
 	}
 
 	@Test
@@ -47,8 +47,8 @@ class ECTest {
 
 		ECPoint result = ec.pointAddition(point1, point2);
 
-		assertEquals(BigInteger.valueOf(95), result.getX());
-		assertEquals(BigInteger.valueOf(31), result.getY());
+		assertEquals(BigInteger.valueOf(95), result.x);
+		assertEquals(BigInteger.valueOf(31), result.y);
 	}
 
 	@Test
@@ -59,8 +59,8 @@ class ECTest {
 
 		ECPoint result = ec.pointAddition(point1, point2);
 
-		assertEquals(BigInteger.valueOf(95), result.getX());
-		assertEquals(BigInteger.valueOf(31), result.getY());
+		assertEquals(BigInteger.valueOf(95), result.x);
+		assertEquals(BigInteger.valueOf(31), result.y);
 	}
 
 	@Test
@@ -71,8 +71,8 @@ class ECTest {
 
 		ECPoint result = ec.pointAddition(point1, point2);
 
-		assertEquals(BigInteger.valueOf(74), result.getX());
-		assertEquals(BigInteger.valueOf(77), result.getY());
+		assertEquals(BigInteger.valueOf(74), result.x);
+		assertEquals(BigInteger.valueOf(77), result.y);
 	}
 
 	@Test
@@ -82,8 +82,8 @@ class ECTest {
 
 		ECPoint result = ec.scalarMultiplication(BigInteger.ONE, point1);
 
-		assertEquals(BigInteger.valueOf(95), result.getX());
-		assertEquals(BigInteger.valueOf(31), result.getY());
+		assertEquals(BigInteger.valueOf(95), result.x);
+		assertEquals(BigInteger.valueOf(31), result.y);
 	}
 
 	@Test
@@ -93,8 +93,8 @@ class ECTest {
 
 		ECPoint result = ec.scalarMultiplication(BigInteger.TWO, point1);
 
-		assertEquals(BigInteger.valueOf(74), result.getX());
-		assertEquals(BigInteger.valueOf(77), result.getY());
+		assertEquals(BigInteger.valueOf(74), result.x);
+		assertEquals(BigInteger.valueOf(77), result.y);
 	}
 
 	@Test
@@ -104,8 +104,8 @@ class ECTest {
 
 		ECPoint result = ec.scalarMultiplication(BigInteger.TEN, point1);
 
-		assertEquals(BigInteger.valueOf(80), result.getX());
-		assertEquals(BigInteger.valueOf(87), result.getY());
+		assertEquals(BigInteger.valueOf(80), result.x);
+		assertEquals(BigInteger.valueOf(87), result.y);
 	}
 
 	@Test
@@ -115,8 +115,8 @@ class ECTest {
 
 		ECPoint result = ec.scalarMultiplication(BigInteger.ZERO, point1);
 
-		assertEquals(BigInteger.ZERO, result.getX());
-		assertEquals(BigInteger.ZERO, result.getY());
+		assertEquals(BigInteger.ZERO, result.x);
+		assertEquals(BigInteger.ZERO, result.y);
 	}
 
 	@Test
@@ -126,8 +126,8 @@ class ECTest {
 
 		ECPoint result = ec.scalarMultiplication(BigInteger.TEN, point1);
 
-		assertEquals(BigInteger.ZERO, result.getX());
-		assertEquals(BigInteger.ZERO, result.getY());
+		assertEquals(BigInteger.ZERO, result.x);
+		assertEquals(BigInteger.ZERO, result.y);
 	}
 
 	@Test
@@ -163,8 +163,8 @@ class ECTest {
 
 		ECPoint expected = ec.new ECPoint(new BigInteger(expectedX, 16), new BigInteger(expectedY, 16));
 
-		assertEquals(expected.getX(), result.getX());
-		assertEquals(expected.getY(), result.getY());
+		assertEquals(expected.x, result.x);
+		assertEquals(expected.y, result.y);
 	}
 
 	private static Stream<Arguments> testData() {
@@ -198,10 +198,10 @@ class ECTest {
 
 		assertEquals(new BigInteger(
 				"C6047F9441ED7D6D3045406E95C07CD85C778E4B8CEF3CA7ABAC09B95C709EE5", 16),
-				result.getX());
+				result.x);
 		assertEquals(new BigInteger(
 				"1AE168FEA63DC339A3C58419466CEAEEF7F632653266D0E1236431A950CFE52A", 16),
-				result.getY());
+				result.y);
 	}
 
 	@Test
@@ -218,9 +218,9 @@ class ECTest {
 		ECPoint result = ec.pointAddition(point1, ec.scalarMultiplication(BigInteger.TWO, point2));
 
 		assertEquals(new BigInteger("F9308A019258C31049344F85F89D5229B531C845836F99B08601F113BCE036F9", 16),
-				result.getX());
+				result.x);
 		assertEquals(new BigInteger("388F7B0F632DE8140FE337E62A37F3566500A99934C2231B6CB9FD7584B8E672", 16),
-				result.getY());
+				result.y);
 
 	}
 }
