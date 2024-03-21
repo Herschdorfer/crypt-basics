@@ -94,7 +94,7 @@ public class EC {
 	 * 
 	 * @return The order of a point
 	 */
-	List<Integer> calculateNAF(int n) {
+	private List<Integer> calculateNAF(int n) {
 		List<Integer> z = new ArrayList<>();
 		while (n > 0) {
 			if (n % 2 == 1) {

@@ -3,17 +3,19 @@ package crypt_basics.ec;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import crypt_basics.ec.EC.ECPoint;
-import org.junit.jupiter.api.Assertions;
 
 class ECTest {
 
@@ -231,42 +233,43 @@ class ECTest {
 
 	}
 
-	@Test
-	void testCalculateNAF_7() {
-		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+	private Method getCalculateNAFMethod() throws NoSuchMethodException, SecurityException {
+		Method method;
 
-		List<Integer> naf = ec.calculateNAF(7);
-
-		assertEquals(List.of(-1, 0, 0, 1), naf);
-
+		method = EC.class.getDeclaredMethod("calculateNAF", int.class);
+		method.setAccessible(true);
+		return method;
 	}
 
 	@Test
-	void testCalculateNAF_13() {
+	void testCalculateNAF_7() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 
-		List<Integer> naf = ec.calculateNAF(13);
-
-		assertEquals(List.of(1, 0, -1, 0, 1), naf);
-
+		assertEquals(List.of(-1, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 7));
 	}
 
 	@Test
-	void testCalculateNAF_29() {
+	void testCalculateNAF_13() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 
-		List<Integer> naf = ec.calculateNAF(29);
-
-		assertEquals(List.of(1, 0, -1, 0, 0, 1), naf);
-
+		assertEquals(List.of(1, 0, -1, 0, 1), getCalculateNAFMethod().invoke(ec, 13));
 	}
 
 	@Test
-	void testCalculateNAF_30() {
+	void testCalculateNAF_29() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 
-		List<Integer> naf = ec.calculateNAF(30);
+		assertEquals(List.of(1, 0, -1, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 29));
+	}
 
-		assertEquals(List.of(0, -1, 0, 0, 0, 1), naf);
+	@Test
+	void testCalculateNAF_30() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+
+		assertEquals(List.of(0, -1, 0, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 30));
 	}
 }
