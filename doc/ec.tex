@@ -1,12 +1,20 @@
 \chapter{Skalare Multiplikation auf elliptischen Kurven}
 
-\section[Implementierung]
-Die Implementierung besteht aus zwei Klassen, die Klasse \texttt{EC} und die Sub-Klasse \texttt{ECPoint}.
+\section{Implementierung}
+Die Implementierung der \gls{ec} besteht aus zwei Klassen, die Klasse \texttt{EC} und die Sub-Klasse \texttt{ECPoint}.
 
-\section[EC]
-Die Klasse \texttt{EC} repräsentiert eine elliptische Kurve. Sie enthält die Koeffizienten $A$ und $B$ der elliptischen Kurve, sowie die den Feldparameter $q$.
+\subsection{Klasse: EC}
+Die Klasse \texttt{EC} repräsentiert eine elliptische Kurve. Sie enthält die Koeffizienten $A$ und $B$ der elliptischen Kurve, sowie die den Feldparameter $q$. Es werden drei Funktionen bereitgestellt um Berechnungen auf der Kurve durchzuführen: \texttt{scalarMultiplication}, \texttt{pointAddition} and \texttt{pointSubtraction}.
 
+\subsubsection{scalarMultiplication}
+Die Skalare Multiplikation erfolgt durch die Methode \texttt{scalarMultiplication}. Der Algorithmus basiert auf der Additions-Subtraktion-Methode. Der Skalar wird in ein \gls{naf} Array nach \cite{enwiki:1153415896} mit $NAF = \{1,0-1\}$ umgewandelt und die Methoden zu Addition und Subtraktion werden aufgerufen \cite{891000}.
 
-\section[Parameter]
+\subsubsection{pointAddition}
+Die Punktaddition erfolgt durch die Methode \texttt{pointAddition}. Die Methode berechnet die Summe zweier Punkte auf der elliptischen Kurve. Die Methode basiert auf der in \cite{891000} aufgeführten Formel für die Punktaddition auf elliptischen Kurven.
+
+\subsubsection{pointSubtraction}
+Die Punktsubtraktion erfolgt durch die Methode \texttt{pointSubtraction}. Die Methode is nur ein Wrapper für die Punktaddition mit dem negierten Punkt.
+
+\section{Parameter}
 asdsadasdasasd
 
