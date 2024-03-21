@@ -90,7 +90,9 @@ public class EC {
 	}
 
 	/**
-	 * Calculates the NAF of a given number
+	 * Calculates the NAF of a given number.
+	 * 
+	 * @note based on https://en.wikipedia.org/wiki/Non-adjacent_form
 	 * 
 	 * @return The order of a point
 	 */
