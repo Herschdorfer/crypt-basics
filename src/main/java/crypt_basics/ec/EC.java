@@ -1,6 +1,8 @@
 package crypt_basics.ec;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class EC {
@@ -34,6 +36,8 @@ public class EC {
 
 		/**
 		 * Check if two points are equal
+		 * 
+		 * @param other The other point
 		 */
 		public boolean equals(Object other) {
 
@@ -63,8 +67,8 @@ public class EC {
 					.compareTo(BigInteger.ZERO) == 0);
 		}
 
-		public ECPoint minus() {
-			return new ECPoint(x, y.negate());
+		public ECPoint negate() {
+			return new ECPoint(x, y.negate().mod(curveField));
 		}
 	}
 
@@ -86,8 +90,32 @@ public class EC {
 	}
 
 	/**
+	 * Calculates the NAF of a given number
+	 * 
+	 * @return The order of a point
+	 */
+	List<Integer> calculateNAF(int n) {
+		List<Integer> z = new ArrayList<>();
+		while (n > 0) {
+			if (n % 2 == 1) {
+				int zi = 2 - (n % 4);
+				z.add(zi);
+				n -= zi;
+			} else {
+				z.add(0);
+			}
+			n /= 2;
+
+		}
+
+		return z;
+	}
+
+	/**
 	 * Elliptic curve scalar multiplication
 	 * 
+	 * @param n     The scalar
+	 * @param point The point
 	 * @return The product of a scalar and a point
 	 */
 	public ECPoint scalarMultiplication(BigInteger n, ECPoint point) {
@@ -100,23 +128,24 @@ public class EC {
 		BigInteger k;
 		ECPoint pointQ;
 		if (n.compareTo(BigInteger.ZERO) < 0) {
-			pointQ = point.minus();
+			pointQ = point.negate();
 			k = n.negate();
 		} else {
 			pointQ = point;
 			k = n;
 		}
 
-		ECPoint pointS = pointQ;
+		ECPoint pointS = new ECPoint();
 
-		for (int i = 1; i < k.bitLength(); i++) {
+		List<Integer> z = calculateNAF(k.intValue());
+
+		// addition-subtraction chain method
+		for (int i = z.size() - 1; i >= 0; i--) {
 			pointS = pointAddition(pointS, pointS);
-			if ((k.multiply(BigInteger.valueOf(3))).testBit(i) && !k.testBit(i)) {
+			if (z.get(i) == 1) {
 				pointS = pointAddition(pointS, pointQ);
-			}
-
-			if (!(k.multiply(BigInteger.valueOf(3))).testBit(i) && k.testBit(i)) {
-				pointS = pointAddition(pointS, pointQ.minus());
+			} else if (z.get(i) == -1) {
+				pointS = pointSubtraction(pointS, pointQ);
 			}
 		}
 
@@ -127,6 +156,8 @@ public class EC {
 	/**
 	 * Elliptic curve point addition
 	 * 
+	 * @param p0 The first point
+	 * @param p1 The second point
 	 * @return The sum of two points
 	 */
 	public ECPoint pointAddition(ECPoint p0, ECPoint p1) {
@@ -162,5 +193,16 @@ public class EC {
 		BigInteger y = lambda.multiply(p0.x.subtract(x)).subtract(p0.y).mod(this.curveField);
 
 		return new ECPoint(x, y);
+	}
+
+	/**
+	 * Elliptic curve point subtraction
+	 * 
+	 * @param p0 The first point
+	 * @param p1 The second point
+	 * @return The subtraction of two points
+	 */
+	public ECPoint pointSubtraction(ECPoint p0, ECPoint p1) {
+		return pointAddition(p0, p1.negate());
 	}
 }
