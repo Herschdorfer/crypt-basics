@@ -16,9 +16,18 @@ class ClientServerTest {
 			server.openConnection();
 			Thread.sleep(100);
 
+			client.start();
 			client.send("Hello World");
 			Thread.sleep(100);
 			assertEquals("Hello World", server.getMsgQueue().poll());
+
+			server.getClientList().get(0).send("Hello World");
+
+			Thread.sleep(100);
+
+			client.shutdown();
+			server.close();
+
 		});
 	}
 }

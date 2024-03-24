@@ -2,6 +2,8 @@ package crypt_basics.network;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class Server {
 	private Thread serverThread;
 
 	private List<Thread> threadList = new ArrayList<>();
+
+	private List<ClientRunner> clientList = new ArrayList<>();
 
 	/**
 	 * Constructs a Server object with the specified port.
@@ -65,12 +69,15 @@ public class Server {
 				 * Create a new thread for each client connection to receive messages from them
 				 */
 				logger.log(Level.INFO, "client is here {0}:{1}", new Object[] { s1.getInetAddress(), s1.getPort() });
-				InputStream stream = s1.getInputStream();
-				Thread clientThread = new Thread(new ClientRunner(stream));
+				InputStream in = s1.getInputStream();
+				OutputStream out = s1.getOutputStream();
+				ClientRunner client = new ClientRunner(s1.getInetAddress(), s1.getPort(), in, out);
+				Thread clientThread = new Thread(client);
 				clientThread.start();
 
 				// add the client thread to the list for later eg. shutdown
 				threadList.add(clientThread);
+				clientList.add(client);
 			}
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "server socket error", e);
@@ -90,19 +97,63 @@ public class Server {
 	}
 
 	/**
+	 * Disconnects a client.
+	 *
+	 * @param client the client to disconnect
+	 */
+	void disconnect(ClientRunner client) {
+		clientList.remove(client);
+	}
+
+	/**
 	 * The ClientRunner class represents a runnable task that receives messages from
 	 * a client and adds them to the message queue.
 	 */
 	class ClientRunner implements Runnable {
-		private InputStream stream;
+		private InputStream in;
+		private OutputStream out;
+		private InetAddress inetAddress;
+		private int port;
 
-		public ClientRunner(InputStream stream) {
-			this.stream = stream;
+		/**
+		 * Constructs a new ClientRunner object.
+		 *
+		 * @param inetAddress the IP address of the client
+		 * @param i           the port number of the client
+		 * @param in          the input stream to read the message from
+		 * @param out
+		 */
+		public ClientRunner(InetAddress inetAddress, int i, InputStream in, OutputStream out) {
+			this.inetAddress = inetAddress;
+			this.port = i;
+			this.in = in;
+			this.out = out;
 		}
 
 		@Override
 		public void run() {
-			receive(stream);
+			receive(in);
+		}
+
+		public InetAddress getInetAddress() {
+			return inetAddress;
+		}
+
+		public int getPort() {
+			return port;
+		}
+
+		/**
+		 * Sends a message to the client.
+		 *
+		 * @param message the message to send
+		 */
+		public void send(String message) {
+			try {
+				out.write(message.getBytes());
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "client socket error", e);
+			}
 		}
 
 		/**
@@ -118,11 +169,14 @@ public class Server {
 				while ((bytesRead = stream.read(buffer)) != -1) {
 					String msg = new String(buffer, 0, bytesRead);
 					msgQueue.add(msg);
-					logger.log(Level.INFO, msg);
+					logger.log(Level.INFO,
+							() -> String.format("(%s, %s): Received message: %s", inetAddress, port, msg));
 				}
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, "client socket error", e);
 			}
+
+			disconnect(this);
 		}
 	}
 
@@ -140,5 +194,14 @@ public class Server {
 	 */
 	public void close() {
 		serverThread.interrupt();
+	}
+
+	public List<ClientRunner> getClientList() {
+		return clientList;
+	}
+
+	public static void main(String[] args) throws IOException {
+		Server server = new Server(8080);
+		server.openConnection();
 	}
 }

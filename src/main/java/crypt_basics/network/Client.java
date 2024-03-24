@@ -1,8 +1,12 @@
 package crypt_basics.network;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -19,6 +23,18 @@ public class Client {
 	/** The port. */
 	private int port;
 
+	private boolean shutdown;
+
+	private OutputStream out;
+
+	private InputStream in;
+
+	private Thread reader;
+
+	private Socket socket;
+
+	private Thread writer;
+
 	/**
 	 * Client constructor
 	 * 
@@ -28,22 +44,90 @@ public class Client {
 	public Client(int port, String host) {
 		this.port = port;
 		this.host = host;
+		this.shutdown = false;
+	}
+
+	public void shutdown() throws IOException {
+		this.shutdown = true;
+		this.reader.interrupt();
+		this.writer.interrupt();
+		this.socket.close();
 	}
 
 	/**
-	 * Sends a message to the server.
+	 * Starts the client.
 	 * 
-	 * @param message the message to send
-	 * @throws IOException if an I/O error occurs while sending the message
+	 * @throws IOException if an I/O error occurs while sending
 	 */
-	public void send(String message) throws IOException {
-		OutputStream out;
+	public void start() throws IOException {
 		// open TCP Socket
-		try (Socket socket = new Socket(host, port)) {
+		try {
+			socket = new Socket(host, port);
 			out = socket.getOutputStream();
-			out.write(message.getBytes());
+			in = socket.getInputStream();
+			reader = new Thread(new Reader());
+			writer = new Thread(new Writer());
+
+			reader.start();
+			writer.start();
 		} catch (IOException e) {
 			logger.severe(e.getMessage());
+		}
+	}
+
+	public void send(String msg) {
+		try {
+			out.write(msg.getBytes());
+		} catch (IOException e) {
+			logger.severe(e.getMessage());
+		}
+	}
+
+	private class Reader implements Runnable {
+
+		@Override
+		public void run() {
+			// read from input stream
+			byte[] buffer = new byte[1024];
+			int bytesRead;
+			try {
+				while (!shutdown && (bytesRead = in.read(buffer)) != -1) {
+					String msg = new String(buffer, 0, bytesRead);
+					logger.log(Level.INFO, () -> String.format("Received message: %s", msg));
+				}
+			} catch (IOException e) {
+				logger.severe(e.getMessage());
+			}
+		}
+
+	}
+
+	private class Writer implements Runnable {
+
+		@Override
+		public void run() {
+			BufferedReader locReader = new BufferedReader(
+					new InputStreamReader(System.in));
+			while (!shutdown) {
+				System.err.println("Enter message: ");
+
+				try {
+					send(locReader.readLine());
+				} catch (IOException e) {
+					logger.severe(e.getMessage());
+					shutdown = true;
+				}
+			}
+		}
+
+	}
+
+	public static void main(String[] args) {
+		Client client = new Client(8080, "localhost");
+		try {
+			client.start();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

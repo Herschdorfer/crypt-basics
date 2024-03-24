@@ -1,0 +1,17 @@
+\chapter{Basic Networking}
+
+\section{Implementierung}
+Das Design besteht aus Zwei Klassen:
+
+\subsection{Server}
+Der Server benötigt im Constructor den Port, auf dem er lauschen soll.
+Danach kann die Methode \texttt{run()} aufgerufen werden, um den Server zu starten.
+Der Server wird einen Socket erstellen und auf eingehende Verbindungen warten.
+Alle eingehenden Verbindungen werden in einem eigenen \texttt{ClientRunner} behandelt.
+Werden Daten empfangen, werden Daten auf eine Queue geschrieben und können von da verarbeitet werden.
+Der Server verwaltet eine liste von Clients, die er kennt. Der Server kann auch Nachrichten an alle Clients senden.
+
+\subsection{Client}
+Der Client leitet alle Daten von stdin an den Server weiter. Antworten vom Server werden auf stdout ausgegeben.
+
+
