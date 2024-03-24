@@ -106,6 +106,17 @@ class ECTest {
 	}
 
 	@Test
+	void testMultiplikation_kMinus() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
+
+		ECPoint result = ec.scalarMultiplication(BigInteger.valueOf(-2), point1);
+
+		assertEquals(BigInteger.valueOf(74), result.x);
+		assertEquals(BigInteger.valueOf(20), result.y);
+	}
+
+	@Test
 	void testMultiplikation_k0() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
