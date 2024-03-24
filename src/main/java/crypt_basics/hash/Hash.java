@@ -17,6 +17,12 @@ public class Hash {
 	 */
 	public Hash(int nBits) throws NoSuchAlgorithmException {
 		switch (nBits) {
+			case 128:
+				algorithm = MessageDigest.getInstance("MD5");
+				break;
+			case 160:
+				algorithm = MessageDigest.getInstance("SHA-1");
+				break;
 			case 256:
 				algorithm = MessageDigest.getInstance("SHA-256");
 				break;

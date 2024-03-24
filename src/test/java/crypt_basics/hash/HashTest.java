@@ -10,6 +10,24 @@ import org.junit.jupiter.api.Test;
 class HashTest {
 
 	@Test
+	void test128() {
+		assertDoesNotThrow(() -> {
+			Hash sut = new Hash(128);
+			String expected = "5f4dcc3b5aa765d61d8327deb882cf99";
+			assertEquals(expected, HexFormat.of().formatHex(sut.hash("password".getBytes("UTF-8"))));
+		});
+	}
+
+	@Test
+	void test160() {
+		assertDoesNotThrow(() -> {
+			Hash sut = new Hash(160);
+			String expected = "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8";
+			assertEquals(expected, HexFormat.of().formatHex(sut.hash("password".getBytes("UTF-8"))));
+		});
+	}
+
+	@Test
 	void test256() {
 		assertDoesNotThrow(() -> {
 			Hash sut = new Hash(256);
