@@ -22,6 +22,18 @@ class DSATest {
 	}
 
 	@Test
+	void generationTest1024() throws NoSuchAlgorithmException {
+		DSA sut = new DSA(1024, 160);
+		generalTest(sut);
+	}
+
+	@Test
+	void generationTest3072() throws NoSuchAlgorithmException {
+		DSA sut = new DSA(3072, 256);
+		generalTest(sut);
+	}
+
+	@Test
 	void invalidLBitsTest() {
 		assertThrows(IllegalArgumentException.class, () -> new DSA(1234, 256));
 	}
