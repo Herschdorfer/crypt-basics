@@ -199,9 +199,4 @@ public class Server {
 	public List<ClientRunner> getClientList() {
 		return clientList;
 	}
-
-	public static void main(String[] args) throws IOException {
-		Server server = new Server(8080);
-		server.openConnection();
-	}
 }
