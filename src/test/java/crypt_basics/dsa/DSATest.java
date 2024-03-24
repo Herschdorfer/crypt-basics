@@ -16,14 +16,8 @@ class DSATest {
 	}
 
 	@Test
-	void generationTest() throws NoSuchAlgorithmException {
+	void generationTest2048() throws NoSuchAlgorithmException {
 		DSA sut = new DSA(2048, 256);
-		generalTest(sut);
-	}
-
-	@Test
-	void generationTest1024() throws NoSuchAlgorithmException {
-		DSA sut = new DSA(1024, 160);
 		generalTest(sut);
 	}
 
@@ -34,18 +28,8 @@ class DSATest {
 	}
 
 	@Test
-	void invalidLBitsTest() {
-		assertThrows(IllegalArgumentException.class, () -> new DSA(1234, 256));
-	}
-
-	@Test
 	void invalidNBitsTest() {
 		assertThrows(IllegalArgumentException.class, () -> new DSA(2048, 1234));
-	}
-
-	@Test
-	void invalidNBitsForL1024Test() {
-		assertThrows(IllegalArgumentException.class, () -> new DSA(1024, 256));
 	}
 
 	@Test

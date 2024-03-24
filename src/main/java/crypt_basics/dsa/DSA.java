@@ -34,11 +34,7 @@ public class DSA {
 
 		final String INVALID_N_BITS_ERROR = "Invalid number of bits for n.";
 
-		if (lBits == 1024) {
-			if (nBits != 160) {
-				throw new IllegalArgumentException(INVALID_N_BITS_ERROR);
-			}
-		} else if (lBits == 2048) {
+		if (lBits == 2048) {
 			if (nBits != 224 && nBits != 256) {
 				throw new IllegalArgumentException(INVALID_N_BITS_ERROR);
 			}
