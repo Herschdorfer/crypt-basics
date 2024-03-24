@@ -283,4 +283,47 @@ class ECTest {
 
 		assertEquals(List.of(0, -1, 0, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 30));
 	}
+
+	@Test
+	void testECPointToString() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+		ECPoint point = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
+
+		assertEquals("x: 95, x: 31", point.toString());
+	}
+
+	@Test
+	void testECPointEquals_y() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
+		ECPoint point2 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
+
+		assertEquals(point1, point2);
+	}
+
+	@Test
+	void testECPointNotEquals_n1() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+		ECPoint point1 = ec.new ECPoint(new BigInteger("3"), new BigInteger("91"));
+		ECPoint point2 = ec.new ECPoint(new BigInteger("3"), new BigInteger("6"));
+
+		Assertions.assertNotEquals(point1, point2);
+	}
+
+	@Test
+	void testECPointNotEquals_n2() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+		ECPoint point1 = ec.new ECPoint(new BigInteger("3"), new BigInteger("91"));
+		ECPoint point2 = ec.new ECPoint(new BigInteger("39"), new BigInteger("91"));
+
+		Assertions.assertNotEquals(point1, point2);
+	}
+
+	@Test
+	void testECPointNotEquals4() {
+		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
+		ECPoint point1 = ec.new ECPoint(new BigInteger("95"), new BigInteger("31"));
+
+		Assertions.assertNotEquals(point1, new Object());
+	}
 }
