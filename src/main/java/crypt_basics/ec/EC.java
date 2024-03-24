@@ -114,7 +114,7 @@ public class EC {
 	}
 
 	/**
-	 * Elliptic curve scalar multiplication
+	 * Elliptic curve scalar multiplication.
 	 * 
 	 * @param n     The scalar
 	 * @param point The point
@@ -122,17 +122,17 @@ public class EC {
 	 */
 	public ECPoint scalarMultiplication(BigInteger n, ECPoint point) {
 
-		// 0 * point(x,y) = 0
-		if (n.equals(BigInteger.ZERO)) {
-			return new ECPoint();
-		}
-
 		BigInteger k;
 		ECPoint pointQ;
-		if (n.compareTo(BigInteger.ZERO) < 0) {
+		if (n.equals(BigInteger.ZERO)) {
+			// 0 * point(x,y) = 0
+			return new ECPoint();
+		} else if (n.compareTo(BigInteger.ZERO) < 0) {
+			// -n * point(x,y) = n * (-point(x,y))
 			pointQ = point.negate();
 			k = n.negate();
 		} else {
+			// n * point(x,y)
 			pointQ = point;
 			k = n;
 		}
