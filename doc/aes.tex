@@ -1,0 +1,11 @@
+\chapter{SymCrypt}
+
+\section{Implementierung}
+Die Klasse \texttt{SymCrypt} implementiert den \gls{aes} Algorithmus mittel \gls{ecb} und \gls{cbc} Mode. Beide Modes können mit PKCS5 Padding verwendet werden. Der Constructor der Klasse \texttt{SymCrypt} erwartet einen \texttt{String} als Passwort und einen \texttt{String} für den Algorithmus (eg. \glqq AES/CBC/NoPadding\grqq, \glqq AES/ECB/PKCS5Padding\grqq , ...).
+Im Constructor wird ein Salt generiert und mittels \texttt{PBKDF2WithHmacSHA1} ein Schlüssel erzeugt. Der Schlüssel wird auf das Feld \texttt{key} gespeichert.
+
+\subsection{Methode: encrypt}
+Die Methode \texttt{encrypt} erwartet einen \texttt{String} als Klartext und gibt ein \texttt{byte[]} als Chiffretext zurück. Im Falle von \gls{cbc} wird ein IV generiert, verwendet und zusammen mit dem Chiffretext zurückgegeben.
+
+\subsection{Methode: decrypt}
+Die Methode \texttt{decrypt} erwartet ein \texttt{byte[]} als Chiffretext und gibt ein \texttt{String} als Klartext zurück. Im Falle von \gls{cbc} wird der IV aus dem Chiffretext extrahiert und verwendet.

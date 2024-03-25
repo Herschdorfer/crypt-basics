@@ -2,10 +2,10 @@
 
 \section{Implementierung}
 
-Alle Berechnungen wurden aus \cite{enwiki:1194947270} abgeleitet.
+Alle Berechnungen in diesem Kapitel wurden aus \cite{enwiki:1194947270} abgeleitet.
 
 \subsection{Initialisierung}
-Die DSA Implementierung stellt einen Constructor bereit, welchem die Bitgößen für $l$ und $n$ übergeben werden. Der Constructor wählt aus der Hash Klasse einen Algorithmus der Größe $n$-Bits aus. Danach werden drei Funktionen aufgerufen:
+Die \gls{dsa} Implementierung stellt einen Constructor bereit, welchem die Bitgößen für $l$ und $n$ übergeben werden. Der Constructor wählt aus der Hash Klasse (Kapitel \ref{chap:hash}) einen Algorithmus der Größe $n$-Bits aus. Danach werden drei Funktionen aufgerufen:
 \begin{itemize}
     \item \texttt{generatePQ} erzeugt die Primzahlen $p$ und $q$.
     \item \texttt{generateG} erzeugt den Generator $g$.
@@ -40,5 +40,5 @@ Zulässig sind folgende Kombinationen:
     \item $l = 3072, n = 256$
 \end{itemize}
 
-In der originalen DSA Spezifikation sind noch weitere Kombinationen mit kleineren $l$ und $n$ angegeben. Diese sind jedoch unsicher und als obsolet zu betrachten.
+In der originalen \gls{dsa} Spezifikation sind noch weitere Kombinationen mit kleineren $l$ und $n$ angegeben. Diese sind jedoch unsicher und als obsolet zu betrachten.
 

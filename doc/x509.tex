@@ -1,0 +1,9 @@
+\chapter{X509}
+
+\section{Implementierung}
+Die x509 Implementierung ist von \cite{bouncy01} inspiriert und erstellt ein minimales x509 Zertifikat mit einem \gls{rsa} Schlüssel und einem \gls{sha} mit 160 Bit (SHA1).
+
+Der Constructor der Klasse \texttt{X509} erzeugt ein \gls{rsa} Schlüsselpaar und speichert es in einem Objekt der Klasse \texttt{KeyPair}.
+Mittels der Methode \texttt{generateX509} wird ein Zertifikat (mit sehr generischen Werten) erstellt zurückgegeben.
+Die Methode \texttt{readCert} liest ein Zertifikat und gibt die wichtigsten Informationen auf der Console aus.
+\texttt{verifyCert} überprüft die Signatur des Zertifikats und die Gültigkeit.
