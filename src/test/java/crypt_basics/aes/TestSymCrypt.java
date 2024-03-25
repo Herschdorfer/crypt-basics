@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class TestSymCrypt {
 
 	@Test
-	void testNoPadding() {
+	void testCBCNoPadding() {
 		assertDoesNotThrow(() -> {
 			SymCrypt sut = new SymCrypt("password", "AES/CBC/NoPadding");
 
@@ -20,9 +20,33 @@ class TestSymCrypt {
 	}
 
 	@Test
-	void testPadding() {
+	void testCBCPadding() {
 		assertDoesNotThrow(() -> {
 			SymCrypt sut = new SymCrypt("password", "AES/CBC/PKCS5Padding");
+
+			String shortText = "123456789012345";
+
+			byte[] temp = sut.encrypt(shortText);
+			assertEquals(shortText, sut.decrypt(temp));
+		});
+	}
+
+	@Test
+	void testECBNoPadding() {
+		assertDoesNotThrow(() -> {
+			SymCrypt sut = new SymCrypt("password", "AES/ECB/NoPadding");
+
+			String shortText = "1234567890123456";
+
+			byte[] temp = sut.encrypt(shortText);
+			assertEquals(shortText, sut.decrypt(temp));
+		});
+	}
+
+	@Test
+	void testECBPadding() {
+		assertDoesNotThrow(() -> {
+			SymCrypt sut = new SymCrypt("password", "AES/ECB/PKCS5Padding");
 
 			String shortText = "123456789012345";
 

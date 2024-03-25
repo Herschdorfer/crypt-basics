@@ -76,16 +76,20 @@ public class SymCrypt {
 			InvalidAlgorithmParameterException {
 		IvParameterSpec iv = createIv();
 
-		cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-		byte[] cipherText = cipher.doFinal(msg.getBytes());
-		byte[] ivBytes = iv.getIV();
+		if (cipher.getAlgorithm().contains("ECB")) {
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			return cipher.doFinal(msg.getBytes());
+		} else {
+			cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+			byte[] cipherText = cipher.doFinal(msg.getBytes());
+			byte[] ivBytes = iv.getIV();
 
-		byte[] concat = new byte[ivBytes.length + cipherText.length];
+			byte[] concat = new byte[ivBytes.length + cipherText.length];
 
-		System.arraycopy(ivBytes, 0, concat, 0, ivBytes.length);
-		System.arraycopy(cipherText, 0, concat, ivBytes.length, cipherText.length);
-
-		return concat;
+			System.arraycopy(ivBytes, 0, concat, 0, ivBytes.length);
+			System.arraycopy(cipherText, 0, concat, ivBytes.length, cipherText.length);
+			return concat;
+		}
 	}
 
 	/**
@@ -102,13 +106,18 @@ public class SymCrypt {
 	public String decrypt(byte[] stream) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException,
 			InvalidAlgorithmParameterException {
 
-		byte[] iv = new byte[cipher.getBlockSize()];
-		byte[] cipherText = new byte[stream.length - iv.length];
+		if (cipher.getAlgorithm().contains("ECB")) {
+			cipher.init(Cipher.DECRYPT_MODE, key);
+			return new String(cipher.doFinal(stream));
+		} else {
+			byte[] iv = new byte[cipher.getBlockSize()];
+			byte[] cipherText = new byte[stream.length - iv.length];
 
-		System.arraycopy(stream, 0, iv, 0, iv.length);
-		System.arraycopy(stream, iv.length, cipherText, 0, cipherText.length);
+			System.arraycopy(stream, 0, iv, 0, iv.length);
+			System.arraycopy(stream, iv.length, cipherText, 0, cipherText.length);
 
-		cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
-		return new String(cipher.doFinal(cipherText));
+			cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+			return new String(cipher.doFinal(cipherText));
+		}
 	}
 }
