@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 
 class TestSymCrypt {
 
+	/**
+	 * AES CBC NoPadding
+	 */
 	@Test
 	void testCBCNoPadding() {
 		assertDoesNotThrow(() -> {
@@ -19,6 +22,9 @@ class TestSymCrypt {
 		});
 	}
 
+	/**
+	 * AES CBC PKCS5Padding
+	 */
 	@Test
 	void testCBCPadding() {
 		assertDoesNotThrow(() -> {
@@ -31,6 +37,9 @@ class TestSymCrypt {
 		});
 	}
 
+	/**
+	 * AES ECB NoPadding
+	 */
 	@Test
 	void testECBNoPadding() {
 		assertDoesNotThrow(() -> {
@@ -43,6 +52,9 @@ class TestSymCrypt {
 		});
 	}
 
+	/**
+	 * AES ECB PKCS5Padding
+	 */
 	@Test
 	void testECBPadding() {
 		assertDoesNotThrow(() -> {
@@ -55,6 +67,11 @@ class TestSymCrypt {
 		});
 	}
 
+	/**
+	 * AES CBC PKCS5Padding
+	 * 
+	 * with long text
+	 */
 	@Test
 	void testLong() {
 		assertDoesNotThrow(() -> {

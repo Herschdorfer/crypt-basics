@@ -19,6 +19,9 @@ import crypt_basics.ec.EC.ECPoint;
 
 class ECTest {
 
+	/**
+	 * Test addition of two points
+	 */
 	@Test
 	void testAddition1() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("10"), new BigInteger("3"));
@@ -31,6 +34,9 @@ class ECTest {
 		assertEquals(BigInteger.valueOf(63), result.y);
 	}
 
+	/**
+	 * Test addition of two points
+	 */
 	@Test
 	void testAddition2() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -43,6 +49,9 @@ class ECTest {
 		assertEquals(BigInteger.valueOf(54), result.y);
 	}
 
+	/**
+	 * Test addition of two points, one is the point at infinity
+	 */
 	@Test
 	void testAddition_P1Inf() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -55,6 +64,9 @@ class ECTest {
 		assertEquals(BigInteger.valueOf(31), result.y);
 	}
 
+	/**
+	 * Test addition of two points, one is the point at infinity
+	 */
 	@Test
 	void testAddition_P2Inf() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -67,6 +79,9 @@ class ECTest {
 		assertEquals(BigInteger.valueOf(31), result.y);
 	}
 
+	/**
+	 * Test addition of two points, both are equal
+	 */
 	@Test
 	void testAddition_P1EqualP2() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -81,6 +96,7 @@ class ECTest {
 
 	private static Stream<Arguments> scalarMultiplicationTestCases() {
 		return Stream.of(
+				// scalar, expectedX, expectedY
 				Arguments.of(BigInteger.valueOf(1), BigInteger.valueOf(95), BigInteger.valueOf(31)),
 				Arguments.of(BigInteger.valueOf(2), BigInteger.valueOf(74), BigInteger.valueOf(77)),
 				Arguments.of(BigInteger.valueOf(3), BigInteger.valueOf(21), BigInteger.valueOf(24)),
@@ -93,6 +109,9 @@ class ECTest {
 				Arguments.of(BigInteger.valueOf(10), BigInteger.valueOf(80), BigInteger.valueOf(87)));
 	}
 
+	/**
+	 * Test scalar multiplication with different scalars
+	 */
 	@ParameterizedTest
 	@MethodSource("scalarMultiplicationTestCases")
 	void testScalarMultiplication(BigInteger scalar, BigInteger expectedX, BigInteger expectedY) {
@@ -105,6 +124,9 @@ class ECTest {
 		Assertions.assertEquals(expectedY, result.y);
 	}
 
+	/**
+	 * Test scalar multiplication with negative scalar
+	 */
 	@Test
 	void testMultiplikation_kMinus() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -116,6 +138,9 @@ class ECTest {
 		assertEquals(BigInteger.valueOf(20), result.y);
 	}
 
+	/**
+	 * Test scalar multiplication with scalar 0
+	 */
 	@Test
 	void testMultiplikation_k0() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -127,6 +152,9 @@ class ECTest {
 		assertEquals(BigInteger.ZERO, result.y);
 	}
 
+	/**
+	 * Test scalar multiplication with point at infinity
+	 */
 	@Test
 	void testMultiplikation_P0() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -138,6 +166,10 @@ class ECTest {
 		assertEquals(BigInteger.ZERO, result.y);
 	}
 
+	/**
+	 * Test point not on curve
+	 * 
+	 */
 	@Test
 	void testPointNotOnCurve_1() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -148,6 +180,10 @@ class ECTest {
 		assertThrows(IllegalArgumentException.class, () -> ec.new ECPoint(x, y));
 	}
 
+	/**
+	 * Test point not on curve
+	 * 
+	 */
 	@Test
 	void testPointNotOnCurve_2() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -158,6 +194,10 @@ class ECTest {
 		assertThrows(IllegalArgumentException.class, () -> ec.new ECPoint(x, y));
 	}
 
+	/**
+	 * Test of scalar multiplication with the curve secp256k1
+	 * 
+	 */
 	@ParameterizedTest
 	@MethodSource("testData")
 	void testMultiplikation_secP256k1_GM(String expectedX, String expectedY, BigInteger scalar) {
@@ -203,6 +243,11 @@ class ECTest {
 						new BigInteger("6")));
 	}
 
+	/**
+	 * Test of calculations with the curve secp256k1
+	 * 
+	 * G1 + G2
+	 */
 	@Test
 	void testAddition_secP256k1_G1G2() {
 		EC ec = new EC(new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F", 16),
@@ -224,6 +269,11 @@ class ECTest {
 				result.y);
 	}
 
+	/**
+	 * Test of calculations with the curve secp256k1
+	 * 
+	 * G1 + 2* G2
+	 */
 	@Test
 	void testAddition_secP256k1_G1M2G2() {
 		EC ec = new EC(new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F", 16),
@@ -244,6 +294,13 @@ class ECTest {
 
 	}
 
+	/**
+	 * Helper method to access the private method calculateNAF
+	 * 
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
 	private Method getCalculateNAFMethod() throws NoSuchMethodException, SecurityException {
 		Method method;
 
@@ -252,6 +309,10 @@ class ECTest {
 		return method;
 	}
 
+	/**
+	 * Test of calculateNAF of the number 7
+	 * 
+	 */
 	@Test
 	void testCalculateNAF_7() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
@@ -260,6 +321,10 @@ class ECTest {
 		assertEquals(List.of(-1, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 7));
 	}
 
+	/**
+	 * Test of calculateNAF of the number 13
+	 * 
+	 */
 	@Test
 	void testCalculateNAF_13() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
@@ -268,6 +333,10 @@ class ECTest {
 		assertEquals(List.of(1, 0, -1, 0, 1), getCalculateNAFMethod().invoke(ec, 13));
 	}
 
+	/**
+	 * Test of calculateNAF of the number 29
+	 * 
+	 */
 	@Test
 	void testCalculateNAF_29() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
@@ -276,6 +345,10 @@ class ECTest {
 		assertEquals(List.of(1, 0, -1, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 29));
 	}
 
+	/**
+	 * Test of calculateNAF of the number 30
+	 * 
+	 */
 	@Test
 	void testCalculateNAF_30() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
@@ -284,6 +357,10 @@ class ECTest {
 		assertEquals(List.of(0, -1, 0, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 30));
 	}
 
+	/**
+	 * Test of the toString method of the ECPoint class
+	 * 
+	 */
 	@Test
 	void testECPointToString() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -292,6 +369,12 @@ class ECTest {
 		assertEquals("x: 95, x: 31", point.toString());
 	}
 
+	/**
+	 * Test equals method of the ECPoint class
+	 * 
+	 * x1 = x2
+	 * y1 = y2
+	 */
 	@Test
 	void testECPointEquals_y() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -301,6 +384,12 @@ class ECTest {
 		assertEquals(point1, point2);
 	}
 
+	/**
+	 * Test equals method of the ECPoint class
+	 * 
+	 * x1 = x2
+	 * y1 != y2
+	 */
 	@Test
 	void testECPointNotEquals_n1() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -310,6 +399,12 @@ class ECTest {
 		Assertions.assertNotEquals(point1, point2);
 	}
 
+	/**
+	 * Test equals method of the ECPoint class
+	 * 
+	 * x1 != x2
+	 * y1 = y2
+	 */
 	@Test
 	void testECPointNotEquals_n2() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
@@ -319,6 +414,11 @@ class ECTest {
 		Assertions.assertNotEquals(point1, point2);
 	}
 
+	/**
+	 * Test equals method of the ECPoint class
+	 * 
+	 * other != instance of ECPoint
+	 */
 	@Test
 	void testECPointNotEquals4() {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));

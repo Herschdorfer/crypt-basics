@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 
 class ClientServerTest {
 
+	/**
+	 * Test communication between client and server
+	 */
 	@Test
 	void testCommunication() {
 		Server server = new Server(8080);

@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 
 class HashTest {
 
+	/**
+	 * Test SHA-256
+	 */
 	@Test
 	void test256() {
 		assertDoesNotThrow(() -> {
@@ -19,6 +22,9 @@ class HashTest {
 		});
 	}
 
+	/**
+	 * Test SHA-384
+	 */
 	@Test
 	void test384() {
 		assertDoesNotThrow(() -> {
@@ -28,6 +34,9 @@ class HashTest {
 		});
 	}
 
+	/**
+	 * Test SHA-512
+	 */
 	@Test
 	void test512() {
 		assertDoesNotThrow(() -> {
@@ -37,6 +46,9 @@ class HashTest {
 		});
 	}
 
+	/**
+	 * Test invalid bit length
+	 */
 	@Test
 	void testInvalid() {
 		assertThrows(IllegalArgumentException.class, () -> {

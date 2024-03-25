@@ -12,7 +12,7 @@ public class EC {
 		public final BigInteger y;
 
 		/**
-		 * A point at zero
+		 * A point at infinity
 		 */
 		public ECPoint() {
 			x = BigInteger.ZERO;

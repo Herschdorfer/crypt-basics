@@ -18,6 +18,9 @@ class X509Test {
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
+	/**
+	 * Test X509 generation
+	 */
 	@Test
 	void testX509Generation() {
 		assertDoesNotThrow(() -> {
