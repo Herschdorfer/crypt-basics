@@ -23,6 +23,13 @@ mvn test
 
 ## Structure
 
-The source code follows the standart Maven structure for code.
+The source code follows the standard Maven structure for code.
+
+`src/main/java/*` contains the implementation.
+`src/main/test/*` contains the test code.
 
 A basic latex documentation can be found in `./doc/`.
+
+## Coverage and Linting
+
+This project is tested and linted by a GitHub Actions and [SonarCloud](https://sonarcloud.io/project/overview?id=Herschdorfer_crypt-basics).
