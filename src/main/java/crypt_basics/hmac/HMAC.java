@@ -44,12 +44,12 @@ public class HMAC {
 	 * Verifies the integrity of a message by comparing its HMAC with the given
 	 * signature.
 	 * 
-	 * @param message   the message to verify
-	 * @param signature the HMAC signature to compare against
+	 * @param message the message to verify
+	 * @param mac     the HMAC signature to compare against
 	 * @return true if the HMAC signature matches, false otherwise
 	 * @throws InvalidKeyException if the secret key is invalid
 	 */
-	public boolean verify(byte[] message, byte[] signature) throws InvalidKeyException {
-		return MessageDigest.isEqual(signature, calc(message));
+	public boolean verify(byte[] message, byte[] mac) throws InvalidKeyException {
+		return MessageDigest.isEqual(mac, calc(message));
 	}
 }
