@@ -14,13 +14,10 @@ import java.util.logging.Logger;
  */
 public class Client {
 
-	/** The logger. */
 	Logger logger = Logger.getLogger(Client.class.getName());
 
-	/** The host. */
 	private String host;
 
-	/** The port. */
 	private int port;
 
 	private boolean shutdown;
@@ -47,11 +44,28 @@ public class Client {
 		this.shutdown = false;
 	}
 
+	/**
+	 * Shuts down the client.
+	 * 
+	 * @throws IOException if an I/O error occurs while closing the socket
+	 */
 	public void shutdown() throws IOException {
 		this.shutdown = true;
-		this.reader.interrupt();
-		this.writer.interrupt();
-		this.socket.close();
+		try {
+			this.reader.interrupt();
+		} catch (Exception e) {
+			logger.severe(e.getMessage());
+		}
+		try {
+			this.writer.interrupt();
+		} catch (Exception e) {
+			logger.severe(e.getMessage());
+		}
+		try {
+			this.socket.close();
+		} catch (Exception e) {
+			logger.severe(e.getMessage());
+		}
 	}
 
 	/**
@@ -72,17 +86,27 @@ public class Client {
 			writer.start();
 		} catch (IOException e) {
 			logger.severe(e.getMessage());
+			shutdown = true;
 		}
 	}
 
+	/**
+	 * Sends a message to the server.
+	 * 
+	 * @param msg the message to send
+	 */
 	public void send(String msg) {
 		try {
 			out.write(msg.getBytes());
 		} catch (IOException e) {
 			logger.severe(e.getMessage());
+			shutdown = true;
 		}
 	}
 
+	/**
+	 * The Reader class reads messages from the input stream.
+	 */
 	private class Reader implements Runnable {
 
 		@Override
@@ -97,11 +121,15 @@ public class Client {
 				}
 			} catch (IOException e) {
 				logger.severe(e.getMessage());
+				shutdown = true;
 			}
 		}
-
 	}
 
+	/**
+	 * The Writer class reads messages from the console and sends them to the output
+	 * stream.
+	 */
 	private class Writer implements Runnable {
 
 		@Override
@@ -119,6 +147,14 @@ public class Client {
 				}
 			}
 		}
+	}
 
+	/**
+	 * Returns whether the client is connected.
+	 * 
+	 * @return true if the client is connected, false otherwise
+	 */
+	public boolean isConnected() {
+		return !this.shutdown;
 	}
 }
