@@ -102,6 +102,7 @@ public class Server {
 	 * @param client the client to disconnect
 	 */
 	void disconnect(ClientRunner client) {
+		client.shutdown();
 		clientList.remove(client);
 	}
 
@@ -114,6 +115,7 @@ public class Server {
 		private OutputStream out;
 		private InetAddress inetAddress;
 		private int port;
+		private boolean clientShutdown;
 
 		/**
 		 * Constructs a new ClientRunner object.
@@ -121,13 +123,14 @@ public class Server {
 		 * @param inetAddress the IP address of the client
 		 * @param i           the port number of the client
 		 * @param in          the input stream to read the message from
-		 * @param out
+		 * @param out         the output stream to write the message to
 		 */
 		public ClientRunner(InetAddress inetAddress, int i, InputStream in, OutputStream out) {
 			this.inetAddress = inetAddress;
 			this.port = i;
 			this.in = in;
 			this.out = out;
+			this.clientShutdown = false;
 		}
 
 		@Override
@@ -141,6 +144,13 @@ public class Server {
 
 		public int getPort() {
 			return port;
+		}
+
+		/**
+		 * Shuts down the client.
+		 */
+		public void shutdown() {
+			this.clientShutdown = true;
 		}
 
 		/**
@@ -166,7 +176,7 @@ public class Server {
 			byte[] buffer = new byte[1024];
 			int bytesRead;
 			try {
-				while ((bytesRead = stream.read(buffer)) != -1) {
+				while ((!clientShutdown && (bytesRead = stream.read(buffer)) != -1)) {
 					String msg = new String(buffer, 0, bytesRead);
 					msgQueue.add(msg);
 					logger.log(Level.INFO,
@@ -174,6 +184,7 @@ public class Server {
 				}
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, "client socket error", e);
+				clientShutdown = true;
 			}
 
 			disconnect(this);
@@ -196,6 +207,11 @@ public class Server {
 		serverThread.interrupt();
 	}
 
+	/**
+	 * Gets the list of clients.
+	 *
+	 * @return the list of clients
+	 */
 	public List<ClientRunner> getClientList() {
 		return clientList;
 	}
