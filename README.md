@@ -4,10 +4,10 @@ This repo includes the basic example of the following implementations:
  * RSA encryption and decryption with key generation
  * scalar multiplication on elliptic curves
  * DSA signature generation anv verification
- * A basic networking example
+ * a basic networking example
  * x509 certificate generation and verification
  * HMAC generation and verification
- * Simple hashing
+ * simple hashing
  * symmetric encryption with AES
 
 ## How to build
