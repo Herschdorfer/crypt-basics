@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class ClientServerTest {
 
 	@Test
-	void test() {
+	void testCommunication() {
 		Server server = new Server(8080);
 		Client client = new Client(8080, "localhost");
 
