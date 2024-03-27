@@ -14,8 +14,8 @@ class KeyGenTest {
 	 */
 	@Test
 	void testRsaPrivateKeyGen() {
-		RSAKeyGen sut = new RSAKeyGen(BigInteger.probablePrime(8, new Random()),
-				BigInteger.probablePrime(8, new Random()), BigInteger.valueOf(65537));
+		RSAKeyGen sut = new RSAKeyGen(BigInteger.probablePrime(512, new Random()),
+				BigInteger.probablePrime(512, new Random()), BigInteger.valueOf(65537));
 
 		for (int i = 0; i < 100; i++) {
 			BigInteger c = BigInteger.valueOf(i).modPow(sut.getD(), sut.getN());
