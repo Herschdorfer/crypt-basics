@@ -63,3 +63,125 @@
   year         = {},
   note         = {[Accessed 25-03-2024]}
 }
+
+@article{nist1991proposed,
+  title   = {proposed federal information processing standard for digital signature standard (DSS)},
+  author  = {Nist, A},
+  journal = {Federal Register},
+  volume  = {56},
+  number  = {1692},
+  pages   = {42980--42982},
+  year    = {1991}
+}
+
+@article{Koblitz1987,
+  acknowledgement = {#ack-nhfb#},
+  added-at        = {2011-02-14T16:52:54.000+0100},
+  author          = {Koblitz, Neal},
+  bibdate         = {Tue Oct 13 08:06:19 MDT 1998},
+  biburl          = {https://www.bibsonomy.org/bibtex/2e2544502ba091eeacb74a0bd4e310788/fohv},
+  classcodes      = {B0250 (Combinatorial mathematics); B6120B (Codes); C1160 (Combinatorial
+                     mathematics); C1260 (Information theory)},
+  coden           = {MCMPAF},
+  corpsource      = {Dept. of Math., Washington Univ., Seattle, WA, USA},
+  date-modified   = {2006-08-22 11:34:20 +0200},
+  fjournal        = {Mathematics of Computation},
+  interhash       = {b6541f1d7a6f44513808dbab756f1223},
+  intrahash       = {e2544502ba091eeacb74a0bd4e310788},
+  issn            = {0025-5718},
+  journal         = {Mathematics of Computation},
+  keywords        = {cryptography; cryptosystems; curve; curves cyclic; elliptic fields; finite global group group; key multiplicative nonsmoothness; number over point; points; primitive public; subgroup theory;},
+  month           = jan,
+  mrclass         = {94A60 (11T71 11Y16 68P25)},
+  mrnumber        = {88b:94017},
+  mrreviewer      = {Harald Niederreiter},
+  number          = 177,
+  pages           = {203--209},
+  referencedin    = {Referenced in \cite[Ref. 3]{Wiener:1998:PCP}.},
+  timestamp       = {2011-02-14T16:53:00.000+0100},
+  title           = {Elliptic Curve Cryptosystems},
+  treatment       = {T Theoretical or Mathematical},
+  volume          = 48,
+  year            = 1987
+}
+
+@article{rsaPaper,
+  author     = {Rivest, R. L. and Shamir, A. and Adleman, L.},
+  title      = {A method for obtaining digital signatures and public-key cryptosystems},
+  year       = {1978},
+  issue_date = {Feb. 1978},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {21},
+  number     = {2},
+  issn       = {0001-0782},
+  url        = {https://doi.org/10.1145/359340.359342},
+  doi        = {10.1145/359340.359342},
+  abstract   = {An encryption method is presented with the novel property that publicly revealing an encryption key does not thereby reveal the corresponding decryption key. This has two important consequences: (1) Couriers or other secure means are not needed to transmit keys, since a message can be enciphered using an encryption key publicly revealed by the intented recipient. Only he can decipher the message, since only he knows the corresponding decryption key. (2) A message can be “signed” using a privately held decryption key. Anyone can verify this signature using the corresponding publicly revealed encryption key. Signatures cannot be forged, and a signer cannot later deny the validity of his signature. This has obvious applications in “electronic mail” and “electronic funds transfer” systems. A message is encrypted by representing it as a number M, raising M to a publicly specified power e, and then taking the remainder when the result is divided by the publicly specified product, n, of two large secret primer numbers p and q. Decryption is similar; only a different, secret, power d is used, where e * d ≡ 1(mod (p - 1) * (q - 1)). The security of the system rests in part on the difficulty of factoring the published divisor, n.},
+  journal    = {Commun. ACM},
+  month      = feb,
+  pages      = {120–126},
+  numpages   = {7},
+  keywords   = {authentication, cryptography, digital signatures, electronic funds transfer, electronic mail, factorization, message-passing, prime number, privacy, public-key cryptosystems, security}
+}
+
+@misc{ITU2011,
+  added-at    = {2011-12-12T12:59:57.000+0100},
+  author      = {{ITU}},
+  biburl      = {https://www.bibsonomy.org/bibtex/2f4d78e7f0e8c93b94a26e89c28fc5155/neoatnhng},
+  interhash   = {201821906733c46f7ab6b19e5dbb43f6},
+  intrahash   = {f4d78e7f0e8c93b94a26e89c28fc5155},
+  keywords    = {Certificates ITU PKI X509},
+  lastchecked = {22-02-2011},
+  month       = feb,
+  owner       = {zazi},
+  timestamp   = {2011-12-12T12:59:57.000+0100},
+  title       = {{X.509}},
+  url         = {http://www.itu.int/rec/T-REC-X.509},
+  year        = 2011
+}
+
+@misc{rfc2104,
+  series       = {Request for Comments},
+  number       = 2104,
+  howpublished = {RFC 2104},
+  publisher    = {RFC Editor},
+  doi          = {10.17487/RFC2104},
+  url          = {https://www.rfc-editor.org/info/rfc2104},
+  author       = {Dr. Hugo Krawczyk and Mihir Bellare and Ran Canetti},
+  title        = {{HMAC: Keyed-Hashing for Message Authentication}},
+  pagetotal    = 11,
+  year         = 1997,
+  month        = feb,
+  abstract     = {This document describes HMAC, a mechanism for message authentication using cryptographic hash functions. HMAC can be used with any iterative cryptographic hash function, e.g., MD5, SHA-1, in combination with a secret shared key. The cryptographic strength of HMAC depends on the properties of the underlying hash function. This memo provides information for the Internet community. This memo does not specify an Internet standard of any kind}
+}
+
+@misc{rfc6234,
+  series       = {Request for Comments},
+  number       = 6234,
+  howpublished = {RFC 6234},
+  publisher    = {RFC Editor},
+  doi          = {10.17487/RFC6234},
+  url          = {https://www.rfc-editor.org/info/rfc6234},
+  author       = {Tony Hansen and Donald E. Eastlake 3rd},
+  title        = {{US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)}},
+  pagetotal    = 127,
+  year         = 2011,
+  month        = may,
+  abstract     = {Federal Information Processing Standard, FIPS}
+}
+
+@misc{rfc3826,
+  series       = {Request for Comments},
+  number       = 3826,
+  howpublished = {RFC 3826},
+  publisher    = {RFC Editor},
+  doi          = {10.17487/RFC3826},
+  url          = {https://www.rfc-editor.org/info/rfc3826},
+  author       = {Fabio Maino and Uri Blumenthal and Keith McCloghrie},
+  title        = {{The Advanced Encryption Standard (AES) Cipher Algorithm in the SNMP User-based Security Model}},
+  pagetotal    = 16,
+  year         = 2004,
+  month        = jun,
+  abstract     = {This document describes a symmetric encryption protocol that supplements the protocols described in the User-based Security Model (USM), which is a Security Subsystem for version 3 of the Simple Network Management Protocol for use in the SNMP Architecture. The symmetric encryption protocol described in this document is based on the Advanced Encryption Standard (AES) cipher algorithm used in Cipher FeedBack Mode (CFB), with a key size of 128 bits. {[}STANDARDS-TRACK{]}}
+}

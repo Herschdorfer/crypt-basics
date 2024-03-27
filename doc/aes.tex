@@ -1,5 +1,8 @@
 \chapter{Symmetrische Verschlüsselung}
 
+\section{Grundlagen}
+Symmetrische Verschlüsselung ist ein Verfahren, bei dem sowohl der Sender als auch der Empfänger den gleichen Schlüssel verwenden. Der Schlüssel wird verwendet, um den Klartext in Chiffretext zu verschlüsseln und vice versa. Der \gls{aes} Algorithmus ist ein Beispiel für symmetrische Verschlüsselung \cite{rfc3826}.
+
 \section{Implementierung}
 Die Klasse \texttt{SymCrypt} implementiert den \gls{aes} Algorithmus mittel \gls{ecb} und \gls{cbc} Mode. Beide Modes können mit PKCS5 Padding verwendet werden. Der Constructor der Klasse \texttt{SymCrypt} erwartet einen \texttt{String} als Passwort und einen \texttt{String} für den Algorithmus (eg. \glqq AES/CBC/NoPadding\grqq, \glqq AES/ECB/PKCS5Padding\grqq , ...).
 Im Constructor wird ein Salt generiert und mittels \texttt{PBKDF2WithHmacSHA1} ein Schlüssel erzeugt. Der Schlüssel wird auf das Feld \texttt{key} gespeichert.

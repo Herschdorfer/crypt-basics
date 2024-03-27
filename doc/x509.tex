@@ -1,7 +1,10 @@
-\chapter{x509 Zertifikate}
+\chapter{X.509 Zertifikate}
+
+\section{Grundlagen}
+Das \gls{x509} ist ein Standard für öffentliche Schlüssel Zertifikate. Es wird in der Regel verwendet, um die Identität eines Geräts oder einer Person zu überprüfen. Ein Zertifikat enthält typischerweise den öffentlichen Schlüssel, den Namen des Besitzers, das Ablaufdatum und die Signatur des Ausstellers \cite{ITU2011}.
 
 \section{Implementierung}
-Die x509 Implementierung ist von \cite{bouncy01} inspiriert und erstellt ein minimales x509 Zertifikat mit einem \gls{rsa} Schlüssel und einem \gls{sha} mit 160 Bit (SHA1).
+Die \gls{x509} Implementierung ist von \cite{bouncy01} inspiriert und erstellt ein minimales \gls{x509} Zertifikat mit einem \gls{rsa} Schlüssel und einem \gls{sha} mit 160 Bit (SHA1).
 
 Der Constructor der Klasse \texttt{X509} erzeugt ein \gls{rsa} Schlüsselpaar und speichert es in einem Objekt der Klasse \texttt{KeyPair}.
 Mittels der Methode \texttt{generateX509} wird ein Zertifikat (mit sehr generischen Werten) erstellt zurückgegeben.

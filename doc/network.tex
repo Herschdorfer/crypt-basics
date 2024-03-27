@@ -1,5 +1,8 @@
 \chapter{Basic Networking}
 
+\section{Grundlagen}
+Das Client-Server-Modell ist ein Modell, bei dem ein Server auf eingehende Verbindungen wartet und Clients diese von sich aus initiieren. Der Server öffnet dabei typischerweise einen Port. Wenn ein Client sich verbindet wird auf einem freien High-Port eine Verbindung hergestellt. Danach ist bidirektionaler Datenaustausch möglich.
+
 \section{Implementierung}
 Das Design besteht aus Zwei Klassen:
 
@@ -9,7 +12,7 @@ Danach kann die Methode \texttt{run()} aufgerufen werden, um den Server zu start
 Der Server wird einen Socket erstellen und auf eingehende Verbindungen warten.
 Alle eingehenden Verbindungen werden in einem eigenen \texttt{ClientRunner} behandelt.
 Werden Daten empfangen, werden Daten auf eine Queue geschrieben und können von da verarbeitet werden.
-Der Server verwaltet eine liste von Clients, die er kennt. Der Server kann auch Nachrichten an alle Clients senden.
+Der Server verwaltet eine Liste von Clients, die er kennt. Der Server kann auch Nachrichten an alle Clients senden.
 
 \subsection{Client}
 Der Client leitet alle Daten von stdin an den Server weiter. Antworten vom Server werden auf stdout ausgegeben.

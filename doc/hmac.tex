@@ -1,9 +1,12 @@
 \chapter{HMAC}
 
+\section{Grundlagen}
+Ein \gls{hmac} ist ein kryptographischer Code, der eine Nachricht und einen Schlüssel verwendet, um die Integrität und Authentizität der Nachricht zu gewährleisten. Der \gls{hmac} Algorithmus basiert in der Regel auf einem Hash-Algorithmus, wie z.B. \gls{sha} \cite{rfc2104}.
+
 \section{Implementierung}
 Die Klasse \texttt{HMAC} implementiert den \gls{hmac} Algorithmus \glqq HmacSHA256\grqq.
 Der Constructor der Klasse \texttt{HMAC} erwartet ein \texttt{byte[]} Array als Schlüssel.
-Die Klasse biete zwei Funktionen an: \texttt{calc} und \texttt{verify}.
+Die Klasse bietet zwei Funktionen an: \texttt{calc} und \texttt{verify}.
 
 \subsection{Methode: calc}
 Die Methode \texttt{calc} erwartet ein \texttt{byte[]} Array als Nachricht und gibt ein \texttt{byte[]} Array als \gls{hmac} zurück.

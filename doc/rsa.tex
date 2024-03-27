@@ -1,5 +1,8 @@
 \chapter{Ver-/Entschlüsselung sowie Schlüsselgenerierung mit RSA}
 
+\section{Grundlagen}
+\gls{rsa} ist ein asymmetrisches Verschlüsselungsverfahren, das 1977 von Ron Rivest, Adi Shamir und Leonard Adleman entwickelt wurde. Es basiert auf der Schwierigkeit des Faktorisierens großer Zahlen \cite{rsaPaper}.
+
 \section{Implementierung}
 Die \gls{rsa} Implementierung ist in zwei Klassen aufgeteilt.
 \begin{itemize}
@@ -11,7 +14,7 @@ Die \gls{rsa} Implementierung ist in zwei Klassen aufgeteilt.
 Der Constructor der Klasse \texttt{RSAKeyGen} erzeugt $n = p*q$ und $\Phi(n) = (p-1)*(q-1)$ und $d = e^{-1} \mod \Phi(n)$ \cite{rfc8017}. Danach werden $p$, $q$ und $\Phi(n)$ verworfen. Der Exponent $e$ wird auf Feld der Klasse \texttt{RSAKeyGen} gespeichert.
 
 \subsection{Klasse: \gls{rsa}}
-Der Constructor der Klasse \texttt{\gls{rsa}} erzeugt ein Objekt der Klasse \texttt{RSAKeyGen}.
+Der Constructor der Klasse \texttt{\gls{rsa}} erzeugt ein Objekt der Klasse \texttt{RSAKeyGen} und speichert die Instanz auf einem Feld.
 
 \subsubsection{Verschlüsselung}
 Die Verschlüsselung erfolgt durch die Methode \texttt{encrypt}. Das übergebene \texttt{char} Array wird einzeln wird mit dem öffentlichen Schlüssel potenziert \cite{rfc8017} und und in einem Array vom Typ \texttt{BigInteger} zurückgegeben.
@@ -22,4 +25,4 @@ Die Entschlüsselung erfolgt analog zu Verschlüsselung, jedoch wird mit dem pri
 \section{Parameter}
 Die Parameter der Klasse \texttt{\gls{rsa}} sind vom Typ \texttt{BigInteger} und können somit Bitgrößen wie 1024 Bit, 2048 Bit oder mehr verarbeiten. Der Exponent $e$ kann entweder 65537 oder beliebig sein, je nach verwendetem Constructor. 65537 ist ein Standardwert für $e$ und wird in der Praxis oft verwendet.
 
-Die Verschlüsselung ist nicht optimal implementiert, da jeder Character in einem String einzeln verschlüsselt wird. Damit wird jeder Character mit dem öffentlichen Schlüssel potenziert wird und damit die Bitröße von 8 teilweise deutlich überschreitet. Die Verschlüsselung ist daher nicht effizient und kann bei großen Texten zu Problemen führen.
+Die Verschlüsselung ist nicht optimal implementiert, da jeder Character in einem String einzeln verschlüsselt wird. Damit wird jeder Character mit dem öffentlichen Schlüssel potenziert wird und damit die Bitgröße von 8 teilweise deutlich überschritten. Die Verschlüsselung ist daher nicht effizient und kann bei großen Texten zu Problemen führen.
