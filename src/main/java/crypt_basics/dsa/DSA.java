@@ -92,7 +92,7 @@ public class DSA {
 		generateStartValues(lBits, nBits);
 
 		// make p a prime number
-		while (!p.isProbablePrime(10)) {
+		while (!p.isProbablePrime(100)) {
 			p = p.add(q);
 
 			// if p is too large, restart the process

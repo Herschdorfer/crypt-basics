@@ -21,7 +21,7 @@ public class EC {
 
 		/**
 		 * A point on the elliptic curve
-		 * 
+		 *
 		 * @param x The x coordinate
 		 * @param y The y coordinate
 		 */
@@ -36,7 +36,7 @@ public class EC {
 
 		/**
 		 * Check if two points are equal
-		 * 
+		 *
 		 * @param other The other point
 		 */
 		public boolean equals(Object other) {
@@ -78,7 +78,7 @@ public class EC {
 
 	/**
 	 * An minimal representation of a elliptic curve.
-	 * 
+	 *
 	 * @param curveField The field of the elliptic curve
 	 * @param curveA     The A parameter of the elliptic curve
 	 * @param curveB     The B parameter of the elliptic curve
@@ -91,31 +91,29 @@ public class EC {
 
 	/**
 	 * Calculates the NAF of a given number.
-	 * 
+	 *
 	 * @note based on https://en.wikipedia.org/wiki/Non-adjacent_form
-	 * 
+	 *
 	 * @return The order of a point
 	 */
-	private List<Integer> calculateNAF(int n) {
+	private List<Integer> calculateNAF(BigInteger n) {
 		List<Integer> z = new ArrayList<>();
-		while (n > 0) {
-			if (n % 2 == 1) {
-				int zi = 2 - (n % 4);
+		while (n.compareTo(BigInteger.ZERO) > 0) {
+			if (n.mod(BigInteger.TWO).equals(BigInteger.ONE)) {
+				int zi = 2 - (n.mod(BigInteger.valueOf(4)).intValue());
 				z.add(zi);
-				n -= zi;
+				n = n.subtract(BigInteger.valueOf(zi));
 			} else {
 				z.add(0);
 			}
-			n /= 2;
-
+			n = n.divide(BigInteger.TWO);
 		}
-
 		return z;
 	}
 
 	/**
 	 * Elliptic curve scalar multiplication.
-	 * 
+	 *
 	 * @param n     The scalar
 	 * @param point The point
 	 * @return The product of a scalar and a point
@@ -139,7 +137,7 @@ public class EC {
 
 		ECPoint pointS = new ECPoint();
 
-		List<Integer> z = calculateNAF(k.intValue());
+		List<Integer> z = calculateNAF(k));
 
 		// addition-subtraction chain method
 		for (int i = z.size() - 1; i >= 0; i--) {
@@ -157,7 +155,7 @@ public class EC {
 
 	/**
 	 * Elliptic curve point addition
-	 * 
+	 *
 	 * @param p0 The first point
 	 * @param p1 The second point
 	 * @return The sum of two points
@@ -199,7 +197,7 @@ public class EC {
 
 	/**
 	 * Elliptic curve point subtraction
-	 * 
+	 *
 	 * @param p0 The first point
 	 * @param p1 The second point
 	 * @return The subtraction of two points
