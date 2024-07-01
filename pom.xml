@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>crypt_basics</groupId>
   <artifactId>crypt_basics</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <properties>
     <project.java.version>1.9</project.java.version>
