@@ -3,7 +3,6 @@ package crypt_basics.dsa;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +18,7 @@ class DSATest {
 	 * Test generation of DSA key pair with 1024 bits
 	 */
 	@Test
-	void generationTest2048() throws NoSuchAlgorithmException {
+	void generationTest2048() {
 		DSA sut = new DSA(2048, 256);
 		generalTest(sut);
 	}
@@ -28,7 +27,7 @@ class DSATest {
 	 * Test generation of DSA key pair with 3072 bits
 	 */
 	@Test
-	void generationTest3072() throws NoSuchAlgorithmException {
+	void generationTest3072() {
 		DSA sut = new DSA(3072, 256);
 		generalTest(sut);
 	}

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class X509Test {
 
 	@BeforeAll
-	static void setUp() throws Exception {
+	static void setUp() {
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
