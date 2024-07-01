@@ -137,7 +137,7 @@ public class EC {
 
 		ECPoint pointS = new ECPoint();
 
-		List<Integer> z = calculateNAF(k));
+		List<Integer> z = calculateNAF(k);
 
 		// addition-subtraction chain method
 		for (int i = z.size() - 1; i >= 0; i--) {
