@@ -168,7 +168,7 @@ class ECTest {
 
 	/**
 	 * Test point not on curve
-	 * 
+	 *
 	 */
 	@Test
 	void testPointNotOnCurve_1() {
@@ -182,7 +182,7 @@ class ECTest {
 
 	/**
 	 * Test point not on curve
-	 * 
+	 *
 	 */
 	@Test
 	void testPointNotOnCurve_2() {
@@ -196,7 +196,7 @@ class ECTest {
 
 	/**
 	 * Test of scalar multiplication with the curve secp256k1
-	 * 
+	 *
 	 */
 	@ParameterizedTest
 	@MethodSource("testData")
@@ -245,7 +245,7 @@ class ECTest {
 
 	/**
 	 * Test of calculations with the curve secp256k1
-	 * 
+	 *
 	 * G1 + G2
 	 */
 	@Test
@@ -271,7 +271,7 @@ class ECTest {
 
 	/**
 	 * Test of calculations with the curve secp256k1
-	 * 
+	 *
 	 * G1 + 2* G2
 	 */
 	@Test
@@ -296,7 +296,7 @@ class ECTest {
 
 	/**
 	 * Helper method to access the private method calculateNAF
-	 * 
+	 *
 	 * @return
 	 * @throws NoSuchMethodException
 	 * @throws SecurityException
@@ -304,62 +304,62 @@ class ECTest {
 	private Method getCalculateNAFMethod() throws NoSuchMethodException, SecurityException {
 		Method method;
 
-		method = EC.class.getDeclaredMethod("calculateNAF", int.class);
+		method = EC.class.getDeclaredMethod("calculateNAF", BigInteger.class);
 		method.setAccessible(true);
 		return method;
 	}
 
 	/**
 	 * Test of calculateNAF of the number 7
-	 * 
+	 *
 	 */
 	@Test
 	void testCalculateNAF_7() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 
-		assertEquals(List.of(-1, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 7));
+		assertEquals(List.of(-1, 0, 0, 1), getCalculateNAFMethod().invoke(ec, BigInteger.valueOf(7)));
 	}
 
 	/**
 	 * Test of calculateNAF of the number 13
-	 * 
+	 *
 	 */
 	@Test
 	void testCalculateNAF_13() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 
-		assertEquals(List.of(1, 0, -1, 0, 1), getCalculateNAFMethod().invoke(ec, 13));
+		assertEquals(List.of(1, 0, -1, 0, 1), getCalculateNAFMethod().invoke(ec, BigInteger.valueOf(13)));
 	}
 
 	/**
 	 * Test of calculateNAF of the number 29
-	 * 
+	 *
 	 */
 	@Test
 	void testCalculateNAF_29() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 
-		assertEquals(List.of(1, 0, -1, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 29));
+		assertEquals(List.of(1, 0, -1, 0, 0, 1), getCalculateNAFMethod().invoke(ec, BigInteger.valueOf(29)));
 	}
 
 	/**
 	 * Test of calculateNAF of the number 30
-	 * 
+	 *
 	 */
 	@Test
 	void testCalculateNAF_30() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		EC ec = new EC(new BigInteger("97"), new BigInteger("2"), new BigInteger("3"));
 
-		assertEquals(List.of(0, -1, 0, 0, 0, 1), getCalculateNAFMethod().invoke(ec, 30));
+		assertEquals(List.of(0, -1, 0, 0, 0, 1), getCalculateNAFMethod().invoke(ec, BigInteger.valueOf(30)));
 	}
 
 	/**
 	 * Test of the toString method of the ECPoint class
-	 * 
+	 *
 	 */
 	@Test
 	void testECPointToString() {
@@ -371,7 +371,7 @@ class ECTest {
 
 	/**
 	 * Test equals method of the ECPoint class
-	 * 
+	 *
 	 * x1 = x2
 	 * y1 = y2
 	 */
@@ -386,7 +386,7 @@ class ECTest {
 
 	/**
 	 * Test equals method of the ECPoint class
-	 * 
+	 *
 	 * x1 = x2
 	 * y1 != y2
 	 */
@@ -401,7 +401,7 @@ class ECTest {
 
 	/**
 	 * Test equals method of the ECPoint class
-	 * 
+	 *
 	 * x1 != x2
 	 * y1 = y2
 	 */
@@ -416,7 +416,7 @@ class ECTest {
 
 	/**
 	 * Test equals method of the ECPoint class
-	 * 
+	 *
 	 * other != instance of ECPoint
 	 */
 	@Test
