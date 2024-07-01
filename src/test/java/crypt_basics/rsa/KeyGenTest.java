@@ -27,12 +27,12 @@ class KeyGenTest {
 	}
 
 	/**
-	 * Test generation of RSA key pair with 1024 bits
+	 * Test generation of RSA key pair with 2048 bits
 	 */
 	@Test
 	void testRsaPrivateKeyGen1024() {
-		RSAKeyGen sut = new RSAKeyGen(BigInteger.probablePrime(512, new Random()),
-				BigInteger.probablePrime(512, new Random()), BigInteger.valueOf(65537));
+		RSAKeyGen sut = new RSAKeyGen(BigInteger.probablePrime(1024, new Random()),
+				BigInteger.probablePrime(1024, new Random()), BigInteger.valueOf(65537));
 
 		for (int i = 0; i < 100; i++) {
 			BigInteger c = BigInteger.valueOf(i).modPow(sut.getD(), sut.getN());
