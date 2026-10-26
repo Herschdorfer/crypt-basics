@@ -28,7 +28,25 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Test with Maven
-      run: mvn test
+      run: |
+        for attempt in 1 2 3; do
+          log_file=$(mktemp)
+          if mvn test >"$log_file" 2>&1; then
+            cat "$log_file"
+            rm "$log_file"
+            exit 0
+          else
+            status=$?
+          fi
+
+          cat "$log_file"
+          if ! grep -q 'HTTP Status: 429' "$log_file" || [ "$attempt" -eq 3 ]; then
+            rm "$log_file"
+            exit "$status"
+          fi
+          rm "$log_file"
+          sleep "$((attempt * 10))"
+        done
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
